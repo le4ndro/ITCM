@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+			 
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/aluno}" >Alunos</a></li>
+				  <li><a href="#" > <span th:text="${responsavel.aluno.name}"></span> </a></li>
+				  <li><a href="#" class="active"> <span th:text="(${responsavel['new']} ? 'Novo Responsável' : ${responsavel.name})"></span> </a></li>
+				</ol>
+			</div>
+			
+			<div class="page-header">
+				<h1><span th:text="(${responsavel['new']} ? 'Novo Responsável' : ${responsavel.name})"></span></h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+
+			<form th:action="@{${#httpServletRequest.servletPath}}" th:object="${responsavel}" method="post" data-parsley-validate="">
+				
+									
+				<div>
+					<h3>Responsável</h3>
+					
+					<div class="form-group">
+						<label for="responsavelname">Nome: <span style="color:red;">*</span></label> 
+						<input type="text" id="responsavelname" class="form-control" th:field="*{name}" data-parsley-required="true"/>
+						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</div>
+					</div>
+				
+				<div>
+					<h3>Identificação</h3>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="rg">RG</label> 
+								<input type="text" id="rg" class="form-control inteiro" th:field="*{identificacao.rg}" />
+								<div th:if="${#fields.hasErrors('identificacao.rg')}" th:errors="*{identificacao.rg}">rg Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="rgUF">UF</label> 
+								<input type="text" id="rgUF" class="form-control upper" th:field="*{identificacao.rgUF}" data-toggle="tooltip" data-placement="top" title="UF do RG" maxlength="2"/>
+								<div th:if="${#fields.hasErrors('identificacao.rgUF')}" th:errors="*{identificacao.rgUF}">rgUF Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="rgOrgaoEmissor">Orgão Emissor</label> 
+								<input type="text" id="rgOrgaoEmissor" class="form-control upper" th:field="*{identificacao.rgOrgaoEmissor}" data-toggle="tooltip" data-placement="top" title="Orgão emissor do RG"/>
+								<div th:if="${#fields.hasErrors('identificacao.rgOrgaoEmissor')}" th:errors="*{identificacao.rgOrgaoEmissor}">rgOrgaoEmissor Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="rgDataExpedicao">Data Expedição</label> 
+								<input type="text" id="rgDataExpedicao" class="datepicker form-control" th:field="*{identificacao.rgDataExpedicao}" data-toggle="tooltip" data-placement="top" title="Data de expedição do RG"/>
+								<div th:if="${#fields.hasErrors('identificacao.rgDataExpedicao')}" th:errors="*{identificacao.rgDataExpedicao}">rgDataExpedicao Error</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="cpf">CPF <span style="color:red;">*</span></label> 
+								<input type="text" id="cpf" class="form-control cpf" th:field="*{identificacao.cpf}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('identificacao.cpf')}" th:errors="*{identificacao.cpf}">cpf Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tituloEleitoral">Título Eleitoral</label> 
+								<input type="text" id="tituloEleitoral" class="form-control inteiro" th:field="*{identificacao.tituloEleitoral}" />
+								<div th:if="${#fields.hasErrors('identificacao.tituloEleitoral')}" th:errors="*{identificacao.tituloEleitoral}">tituloEleitoral Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tituloEleitoralZona">Zona</label> 
+								<input type="text" id="tituloEleitoralZona" class="form-control inteiro" th:field="*{identificacao.tituloEleitoralZona}" data-toggle="tooltip" data-placement="top" title="Zona do título de eleitor" maxlength="3" data-parsley-type="integer"/>
+								<div th:if="${#fields.hasErrors('identificacao.tituloEleitoralZona')}" th:errors="*{identificacao.tituloEleitoralZona}">tituloEleitoralZona Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tituloEleitoralSecao">Seção</label> 
+								<input type="text" id="tituloEleitoralSecao" class="form-control inteiro" th:field="*{identificacao.tituloEleitoralSecao}" data-toggle="tooltip" data-placement="top" title="Seção do título de eleitor" maxlength="4" data-parsley-type="integer"/>
+								<div th:if="${#fields.hasErrors('identificacao.tituloEleitoralSecao')}" th:errors="*{identificacao.tituloEleitoralSecao}">tituloEleitoralSecao Error</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="certificadoDeReservista">Certificado de Reservista</label> 
+								<input type="text" id="certificadoDeReservista" class="form-control reservista" th:field="*{identificacao.certificadoDeReservista}" />
+								<div th:if="${#fields.hasErrors('identificacao.certificadoDeReservista')}" th:errors="*{identificacao.certificadoDeReservista}">certificadoDeReservista Error</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="carteiraDeTrabalho">Carteira de Trabalho</label> 
+								<input type="text" id="carteiraDeTrabalho" class="form-control inteiro" th:field="*{identificacao.carteiraDeTrabalho}" />
+								<div th:if="${#fields.hasErrors('identificacao.carteiraDeTrabalho')}" th:errors="*{identificacao.carteiraDeTrabalho}">carteiraDeTrabalho Error</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="carteiraDeTrabalhoSerie">Série</label> 
+								<input type="text" id="carteiraDeTrabalhoSerie" class="form-control" th:field="*{identificacao.carteiraDeTrabalhoSerie}" data-toggle="tooltip" data-placement="top" title="Número de série da carteira de trabalho"/>
+								<div th:if="${#fields.hasErrors('identificacao.carteiraDeTrabalhoSerie')}" th:errors="*{identificacao.carteiraDeTrabalhoSerie}">carteiraDeTrabalhoSerie Error</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="estadoCivil">Estado Civil <span style="color:red;">*</span></label> 
+								 <select id="estadoCivil" class="form-control" th:field="*{identificacao.estadoCivil}" data-parsley-required="true" >
+								  <option value="solteiro">Soltero(a)</option>
+								  <option value="casado">Casado(a)</option>
+								</select> 
+								<div th:if="${#fields.hasErrors('identificacao.estadoCivil')}" th:errors="*{identificacao.estadoCivil}">estadoCivil Error</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="sexo">Sexo <span style="color:red;">*</span></label><br/> 
+								<input type="radio" class="sexo" checked="true" name="sexo" th:value="masculino" th:radiogroup="sexo" th:field="*{identificacao.sexo}"/>&nbsp;Masculino
+								
+								<input type="radio" class="sexo" name="sexo" th:value="feminino" th:radiogroup="sexo" th:field="*{identificacao.sexo}"/>&nbsp;Feminino
+								<br/>
+								<div th:if="${#fields.hasErrors('identificacao.sexo')}" th:errors="*{identificacao.sexo}">sexo Error</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="naturalidade">Naturalidade <span style="color:red;">*</span></label> 
+								<input type="text" id="naturalidade" class="form-control" th:field="*{identificacao.naturalidade}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('identificacao.naturalidade')}" th:errors="*{identificacao.naturalidade}">naturalidade Error</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div>
+					<h3>Endereço</h3>
+					
+					<div class="form-group">
+						<label for="enderecologradouro">Logradouro <span style="color:red;">*</span></label> 
+						<input type="text" id="enderecologradouro" class="form-control" th:field="*{endereco.logradouro}" data-parsley-required="true"/>
+						<div th:if="${#fields.hasErrors('endereco.logradouro')}" th:errors="*{endereco.logradouro}">endereco.logradouro Error</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="enderecocomplemento">Complemento</label> 
+						<input type="text" id="enderecocomplemento" class="form-control" th:field="*{endereco.complemento}" />
+						<div th:if="${#fields.hasErrors('endereco.complemento')}" th:errors="*{endereco.complemento}">endereco.complemento Error</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecobairro">Bairro <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecobairro" class="form-control" th:field="*{endereco.bairro}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}">endereco.bairro Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecocidade">Cidade <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecocidade" class="form-control" th:field="*{endereco.cidade}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('endereco.cidade')}" th:errors="*{endereco.cidade}">endereco.cidade Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecoUF">UF <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecoUF" class="form-control upper" th:field="*{endereco.UF}" data-parsley-required="true" maxlength="2"/>
+								<div th:if="${#fields.hasErrors('endereco.UF')}" th:errors="*{endereco.UF}">endereco.UF Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecoCEP">CEP</label> 
+								<input type="text" id="enderecoCEP" class="form-control cep" th:field="*{endereco.CEP}" />
+								<div th:if="${#fields.hasErrors('endereco.CEP')}" th:errors="*{endereco.CEP}">endereco.CEP Error</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+					
+				
+				<div>
+					<h3>Dados de Contato</h3>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel1">Telefone 1</label> 
+								<input type="text" id="tel1" class="form-control telefone" th:field="*{contato.tel1}" />
+								<div th:if="${#fields.hasErrors('contato.tel1')}" th:errors="*{contato.tel1}">contato.tel1 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel2">Telefone 2</label> 
+								<input type="text" id="tel2" class="form-control telefone" th:field="*{contato.tel2}" />
+								<div th:if="${#fields.hasErrors('contato.tel2')}" th:errors="*{contato.tel2}">contato.tel2 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel3">Telefone 3</label> 
+								<input type="text" id="tel3" class="form-control telefone" th:field="*{contato.tel3}" />
+								<div th:if="${#fields.hasErrors('contato.tel3')}" th:errors="*{contato.tel3}">contato.tel3 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="movel">Celular</label> 
+								<input type="text" id="movel" class="form-control movel" th:field="*{contato.movel}" />
+								<div th:if="${#fields.hasErrors('contato.movel')}" th:errors="*{contato.movel}">contato.movel Error</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="fax">Fax</label> 
+								<input type="text" id="fax" class="form-control fax" th:field="*{contato.fax}" />
+								<div th:if="${#fields.hasErrors('contato.fax')}" th:errors="*{contato.fax}">contato.fax Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="site">Site</label> 
+								<input type="text" id="site" class="form-control" th:field="*{contato.site}" data-parsley-type="url"/>
+								<div th:if="${#fields.hasErrors('contato.site')}" th:errors="*{contato.site}">contato.site Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="email">E-mail</label> 
+								<input type="text" id="email" class="form-control" th:field="*{contato.email}" data-parsley-type="email" />
+								<div th:if="${#fields.hasErrors('contato.email')}" th:errors="*{contato.email}">contato.email Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="skype">Skype</label> 
+								<input type="text" id="skype" class="form-control" th:field="*{contato.skype}" />
+								<div th:if="${#fields.hasErrors('contato.skype')}" th:errors="*{contato.skype}">contato.skype Error</div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				 
+				 
+				</div><!-- responsável -->
+				
+				<div>
+					<input type="submit" class="btn btn-primary" th:value="(${responsavel['new']} ? 'Incluir' : 'Atualizar')" />
+					<a th:href="@{/aluno/{id}/detail(id=${responsavel.aluno.id})}" class="btn btn-primary">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+    <div th:utext="${msginfo}"></div>
+</body>
+</html>

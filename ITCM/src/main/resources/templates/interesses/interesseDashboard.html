@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container-fluid">
+		<div class="starter-template">
+			<div class="row">
+		       <ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a href="#" class="active">Interesses</a></li>
+				</ol>
+	        </div>
+			
+		   <div class="row">
+		       <div class="page-header"> 
+		       		<h1>Interesses</h1>
+		       </div>
+	       </div>
+
+			<div class="row">
+				<p>
+					<a th:href="@{/interesse/new}" class="btn btn-primary">Registrar Interesse</a>
+				</p>
+			</div>
+			<br/>
+			<div class="row">
+			
+				<div class="panel panel-default">
+				  <div class="panel-heading">Nesta semana</div>
+				  <div class="panel-body">
+				    
+				    <div class="row">
+					    <div class="col-md-6">
+						    <div class="panel panel-default">
+							  <div class="panel-heading">Curso</div>
+							  <div class="panel-body">
+							    <div id="semanaporcurso" style="width:400px;height:200px"></div>
+							  </div>
+							</div>
+						</div>
+						
+					    <div class="col-md-6">
+						    <div class="panel panel-default">
+							  <div class="panel-heading">Sexo</div>
+							  <div class="panel-body">
+							    <div id="semanaporsexo" style="width:400px;height:200px"></div>
+							  </div>
+							</div>
+						</div>
+				    </div>
+				    
+				  </div>
+				</div>
+			</div>
+			
+			<div class="row">
+			
+				<div class="panel panel-default">
+				  <div class="panel-heading">Neste Mês</div>
+				  <div class="panel-body">
+				    
+				    <div class="row">
+					    <div class="col-md-6">
+						    <div class="panel panel-default">
+							  <div class="panel-heading">Curso</div>
+							  <div class="panel-body">
+							    <div id="mesporcurso" style="width:400px;height:200px"></div>
+							  </div>
+							</div>
+						</div>
+						
+					    <div class="col-md-6">
+						    <div class="panel panel-default">
+							  <div class="panel-heading">Sexo</div>
+							  <div class="panel-body">
+							    <div id="mesporsexo" style="width:400px;height:200px"></div>
+							  </div>
+							</div>
+						</div>
+				    </div>
+				    
+				  </div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script th:src="@{/webjars/flot/0.8.3/jquery.flot.js}"></script>
+	<script th:src="@{/webjars/flot/0.8.3/jquery.flot.pie.js}"></script>
+	<script>
+		$(function() {
+			var dataCursoSemana = [
+				{ label: "Python",  data: 10},
+				{ label: "PHP",  data: 30},
+				{ label: "C++",  data: 90},
+				{ label: "Javascript",  data: 70},
+				{ label: "Rails",  data: 80},
+				{ label: "Java",  data: 110}
+			];
+
+			$.plot('#semanaporcurso', dataCursoSemana, {
+			    series: {
+			        pie: {
+			            innerRadius: 0.5,
+			            show: true
+			        }
+			    }
+			});
+
+			var dataSexoSemana = [
+			       				{ label: "Masculino",  data: 40},
+			       				{ label: "Feminino",  data: 350}
+			       			];
+
+			$.plot('#semanaporsexo', dataSexoSemana, {
+			    series: {
+			        pie: {
+			            innerRadius: 0.5,
+			            show: true
+			        }
+			    }
+			});
+
+			var dataCursoMes = [
+   				{ label: "Python",  data: 10},
+   				{ label: "PHP",  data: 30},
+   				{ label: "C++",  data: 10},
+   				{ label: "Javascript",  data: 70},
+   				{ label: "Rails",  data: 80},
+   				{ label: "Java",  data: 110}
+   			];
+
+   			$.plot('#mesporcurso', dataCursoMes, {
+   			    series: {
+   			        pie: {
+   			            innerRadius: 0.5,
+   			            show: true
+   			        }
+   			    }
+   			});
+
+   			var dataSexoMes = [
+   			       				{ label: "Masculino",  data: 10},
+   			       				{ label: "Feminino",  data: 350}
+   			       			];
+
+   			$.plot('#mesporsexo', dataSexoMes, {
+   			    series: {
+   			        pie: {
+   			            innerRadius: 0.5,
+   			            show: true
+   			        }
+   			    }
+   			});
+
+			
+// 			$.plot('#placeholder', data, {
+// 			    series: {
+// 			        pie: {
+// 			            show: true,
+// 			            radius: 1,
+// 			            label: {
+// 			                show: true,
+// 			                radius: 3/4,
+// 			                formatter: labelFormatter,
+// 			                background: {
+// 			                    opacity: 0.5
+// 			                }
+// 			            }
+// 			        }
+// 			    },
+// 			    legend: {
+// 			        show: false
+// 			    }
+// 			});
+
+			
+		});
+
+// 		function labelFormatter(label, series) {
+// 			return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+// 		}
+	</script>
+	<div th:utext="${msginfo}"></div>
+</body>
+</html>

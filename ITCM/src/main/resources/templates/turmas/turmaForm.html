@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+		
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/turma}" >Turmas</a></li>
+				  <li><a href="#" class="active"> <span th:text="(${turma['new']} ? 'Nova Turma' : ${turma.name})"></span> </a></li>
+				</ol>
+			</div>
+			
+			<div class="page-header">
+				<h1><span th:text="(${turma['new']} ? 'Nova Turma' : ${turma.name})"></span></h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+
+			<form class="chk" th:action="@{${#httpServletRequest.servletPath}}" th:object="${turma}" method="post" data-parsley-validate="">
+			
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="empresas">Empresa <span style="color:red;">*</span></label> 
+							<select th:field="*{empresa}" id="empresas" class="form-control" data-parsley-validate="">
+							  <option th:each="empresa : ${empresas}" 
+							          th:value="${empresa.id}" 
+							          th:text="${empresa.name}">Wireframe</option>
+							</select>
+							<div th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}">unidade Error</div>
+						</div>
+					</div>
+				
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="unidades">Unidade <span style="color:red;">*</span></label> 
+							<select th:field="*{unidade}" id="unidades" class="form-control" data-parsley-validate="">
+							  <option th:each="unidade : ${unidades}" 
+							          th:value="${unidade.id}" 
+							          th:text="${unidade.name}">Wireframe</option>
+							</select>
+							<div th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}">unidade Error</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="ambientes">Sala <span style="color:red;">*</span></label> 
+							<select th:field="*{ambiente}" id="ambientes" class="form-control" data-parsley-validate="">
+							  <option th:each="ambiente : ${ambientes}" 
+							          th:value="${ambiente.id}" 
+							          th:text="${ambiente.name}">Wireframe</option>
+							</select>
+							<div th:if="${#fields.hasErrors('ambiente')}" th:errors="*{ambiente}">ambiente Error</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="cursos">Curso <span style="color:red;">*</span></label> 
+							<select th:field="*{curso}" id="cursos" class="form-control chosen-select" data-parsley-validate="">
+							  <option th:each="curso : ${cursos}" 
+							          th:value="${curso.id}" 
+							          th:text="${curso.name}">Wireframe</option>
+							</select>
+							<div th:if="${#fields.hasErrors('curso')}" th:errors="*{curso}">curso Error</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="professor">Professor (a) <span style="color:red;">*</span></label> 
+							<select th:field="*{professor}" id="professores" class="form-control chosen-select" data-parsley-validate="">
+							  <option th:each="professor : ${professores}" 
+							          th:value="${professor.id}" 
+							          th:text="${professor.name}">Wireframe</option>
+							</select>
+							<div th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}">professor Error</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="dataInicio">Início Previsto <span style="color:red;">*</span></label> 
+							<input type="text" id="dataInicio" class="form-control datepicker" th:field="*{dataInicio}" data-parsley-validate=""/>
+							<div th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}">dataInicio Error</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="dataTermino">Término Previsto <span style="color:red;">*</span></label> 
+							<input type="text" id="dataTermino" class="form-control datepicker" th:field="*{dataTermino}" data-parsley-validate=""/>
+							<div th:if="${#fields.hasErrors('dataTermino')}" th:errors="*{dataTermino}">dataInicio Error</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="name">Nome de exibição para turma <span style="color:red;">*</span></label> 
+							<input type="text" id="name" class="form-control" th:field="*{name}" data-parsley-validate=""/>
+							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Dias da Semana <span style="color:red;">*</span></label>
+							<div id="diasdasemana">			                    
+			                    <input type="checkbox" id="day1" value="Dom" th:checked="${Dom}"/> Dom
+			                    <input type="checkbox" id="day2" value="Seg" th:checked="${Seg}"/> Seg
+			                    <input type="checkbox" id="day3" value="Ter" th:checked="${Ter}"/> Ter
+			                    <input type="checkbox" id="day4" value="Qua" th:checked="${Qua}"/> Qua
+			                    <input type="checkbox" id="day5" value="Qui" th:checked="${Qui}"/> Qui
+			                    <input type="checkbox" id="day6" value="Sex" th:checked="${Sex}"/> Sex
+			                    <input type="checkbox" id="day7" value="Sab" th:checked="${Sab}"/> Sab
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="horaInicio">Hora Início (HH:MM) <span style="color:red;">*</span></label> 
+							<input type="text" id="horaInicio" class="form-control hora" th:field="*{horaInicio}" data-parsley-validate=""/>
+							<div th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}">horaInicio Error</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="horaTermino">Hora Fim (HH:MM) <span style="color:red;">*</span></label> 
+							<input type="text" id="horaTermino" class="form-control hora" th:field="*{horaTermino}" data-parsley-validate=""/>
+							<div th:if="${#fields.hasErrors('horaTermino')}" th:errors="*{horaTermino}">horaTermino Error</div>
+						</div>
+					</div>	
+				</div>
+				
+				<div class="form-group">
+					<label for="obs">Observações</label><br/><br/>
+					<textarea name="obs" id="obs" rows="10" cols="80"
+						th:field="*{obs}" class="ckeditor">
+            		</textarea>
+					<div th:if="${#fields.hasErrors('obs')}" th:errors="*{obs}">Ementa Error</div>
+				</div>
+				
+				<input type="hidden" id="dias" th:field="*{dias}"/> 
+
+				<div>
+					<input type="submit" class="btn btn-primary" th:value="(${turma['new']} ? 'Incluir' : 'Atualizar')" />
+					<a th:href="@{/turma}" class="btn btn-primary">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+	<script>
+		$(function() {
+			$(".chosen-select").chosen();
+
+			
+		});
+		carregaSelect("#empresas", "#unidades", "/api/loadselect/unidades/empresa/");
+		carregaSelect("#unidades", "#ambientes", "/api/loadselect/ambientes/unidade/");
+
+		$(document).on("change", '#cursos', function () {
+			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val(); 
+			$("#name").val(turma);
+		});
+
+		$(document).on("change", '#dataInicio', function () {
+			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
+			$("#name").val(turma); 
+		});
+
+		$(document).on("change", '#dataTermino', function () {
+			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
+			$("#name").val(turma); 
+		});
+
+		$(document).on("submit", ".chk", function () {
+			
+			var selected = "";
+			$('#diasdasemana input:checked').each(function() {
+			    //selected.push($(this).attr('name'));
+			    selected = selected + $(this).val() + ";";
+			});
+			
+			$("#dias").val(selected);
+		});
+		
+  	</script>
+  	<div th:utext="${msginfo}"></div>
+</body>
+</html>

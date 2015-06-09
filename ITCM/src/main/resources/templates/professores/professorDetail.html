@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+      	<div class="row-fluid">
+	       <ol class="breadcrumb">
+			  <li><a th:href="@{/}" >Home</a></li>
+			  <li><a th:href="@{/professor}" >Professores</a></li>
+			  <li><a href="#" class="active"> <span th:text="${professor.name}"></span> </a></li>
+			</ol>
+		</div>
+       <div class="page-header"> 
+       		<h1 th:text="${professor.name}">Professor</h1>
+       </div>
+       <div>
+        	<a th:href="@{/professor/{id}/edit(id=${professor.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/professor/{id}/delete(id=${professor.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/professor}" class="btn btn-primary">Cancelar</a>
+        </div>
+        <br/>
+       
+       <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title"></h3>
+		  </div>
+		  <div class="panel-body">
+		  	
+		    <div class="row">
+		    	<div class="col-md-4">
+		      		<strong> Valor Hora: </strong>
+		        	<span class="real" th:text="${professor.valorHora}"></span>
+		      	</div>
+		     	<div class="col-md-4">
+		      		<strong> Data de Nascimento: </strong>
+		        	<span th:text="${professor.dataDeNascimento} ? ${#dates.format(professor.dataDeNascimento, 'dd/MM/yyyy')}">dataDeNacimento</span>
+		      	</div>
+		    </div> 
+		    <br/>
+		     
+		    <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Observações</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${professor.obs}">
+			    Panel content
+			  </div>
+			</div>
+		    
+		  </div>
+		</div>
+		
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Identificação</h3>
+		  </div>
+		  <div class="panel-body">		  	
+		     
+		     <div class="row">
+			     <div class="col-md-3">
+			      	<strong> RG: </strong>
+			        <span th:text="${professor.identificacao.rg}">rg</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> RG UF: </strong>
+			        <span th:text="${professor.identificacao.rgUF}">rgUF</span>
+			      </div>
+			     <div class="col-md-3">
+			      	<strong> RG Orgão Emissor: </strong>
+			        <span th:utext="${professor.identificacao.rgOrgaoEmissor}">rgOrgaoEmissor</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> RG Data Expedição: </strong>
+			        <span th:text="${professor.identificacao.rgDataExpedicao} ? ${#dates.format(professor.identificacao.rgDataExpedicao, 'dd/MM/yyyy')}">rgDataExpedicao</span>
+			      </div>
+			  </div>
+			  <br/>    
+			  <div class="row">    
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral: </strong>
+			        <span th:text="${professor.identificacao.tituloEleitoral}">tituloEleitoral</span>
+			      </div>
+			      
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral Zona: </strong>
+			        <span th:text="${professor.identificacao.tituloEleitoralZona}">tituloEleitoralZona</span>
+			      </div>  
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral Seção: </strong>
+			        <span th:text="${professor.identificacao.tituloEleitoralSecao}">tituloEleitoralSecao</span>
+			      </div> 
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Cert. de Reservista: </strong>
+			        <span th:text="${professor.identificacao.certificadoDeReservista}">certificadoDeReservista</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Carteira de Trabalho: </strong>
+			        <span th:text="${professor.identificacao.carteiraDeTrabalho}">carteiraDeTrabalho</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Estado Civil: </strong>
+			        <span th:text="${professor.identificacao.estadoCivil}">estadoCivil</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Sexo: </strong>
+			        <span th:text="${professor.identificacao.sexo}">sexo</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Naturalidade: </strong>
+			        <span th:text="${professor.identificacao.naturalidade}">naturalidade</span>
+			      </div>
+		     </div>
+		     
+		  </div>
+		</div>
+       
+       <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Endereço</h3>
+		  </div>
+		  <div class="panel-body">		  
+		     
+		     <div class="row">
+			     <div class="col-md-12">
+			      	<strong> Logradouro: </strong>
+			        <span th:text="${professor.endereco.logradouro}">logradouro</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-12">
+			      	<strong> Complemento: </strong>
+			        <span th:text="${professor.endereco.complemento}">complemento</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Bairro: </strong>
+			        <span th:utext="${professor.endereco.bairro}">bairro</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Cidade: </strong>
+			        <span th:utext="${professor.endereco.cidade}">cidade</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> UF: </strong>
+			        <span th:text="${professor.endereco.UF}">UF</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> CEP: </strong>
+			        <span th:text="${professor.endereco.CEP}">CEP</span>
+			      </div>  
+		      </div>
+		     
+		  </div>
+		</div> 
+       
+       <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Contato</h3>
+		  </div>
+		  <div class="panel-body">		  			     
+		     
+		     <div class="row">
+			     <div class="col-md-3">
+			      	<strong> Telefone 1: </strong>
+			        <span th:text="${professor.contato.tel1}">tel1</span>
+			      </div>
+			      <div class="col-md-3" th:if="${professor.contato.tel2} != ''">
+			      	<strong> Telefone 2: </strong>
+			        <span th:text="${professor.contato.tel2}">tel2</span>
+			      </div>
+			     <div class="col-md-3" th:if="${professor.contato.tel3} != ''">
+			      	<strong> Telefone 3: </strong>
+			        <span th:utext="${professor.contato.tel3}">tel3</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Fax: </strong>
+			        <span th:utext="${professor.contato.fax}">fax</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Site: </strong>
+			        <span th:text="${professor.contato.site}">site</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> E-mail: </strong>
+			        <span th:text="${professor.contato.email}">email</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Skype: </strong>
+			        <span th:text="${professor.contato.skype}">skype</span>
+			      </div>   
+		      </div>
+		     
+		     
+		  </div>
+		</div>
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Formações</h3>
+		  </div>
+		  <div class="panel-body">
+		  
+		  	<p>
+		     	<button class="btn btn-primary incluir">Nova Formação</button>
+		   	</p>
+		  
+		    <table class="table table-bordered">
+		      <thead>
+		      <tr>
+		        <th>Id</th>
+		        <th>Grau</th>
+		        <th>Curso</th>
+		        <th>Instituição</th>
+		        <th>Início</th>
+		        <th>Conclusão</th>
+		        <th></th>
+		      </tr>
+		      </thead>
+		      
+		      
+		      <tbody>
+		      <tr th:each="formacao : ${professor.formacoes}">
+		        <td th:text="${formacao.id}">id</td>
+		        <td th:text="${formacao.grau}">grau</td>
+		        <td th:text="${formacao.curso}">curso</td>
+		        <td th:text="${formacao.instituicao}">instituicao</td>
+		        <td th:text="${formacao.dataInicio}">dataInicio</td>
+		        <td th:text="${formacao.dataConclusao}">dataConclusão</td>
+		        <td>
+<!-- 		        	<a th:href="@{/formacao/{id}/edit(id=${formacao.id})}" class="btn btn-primary btn-xs">Editar</a> -->
+		        	<a th:href="@{/formacao/{id}/delete(id=${formacao.id})}" id="btDelete" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Excluir"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+<!-- 		        	<a th:href="@{/formacao/{id}/detail(id=${formacao.id})}" class="btn btn-primary btn-xs">Detalhes</a> -->
+		        </td>
+		      </tr>
+		      </tbody>
+		      
+		    </table>
+		    
+		    <div class="formCadFormacao">
+		    	<h3>Nova Formação</h3>
+			    <form th:action="@{/formacao/professor/{id}/new(id=${professor.id})}" method="post" data-parsley-validate="">
+					<div class="form-group">
+						<label for="grau">Grau:</label> 
+						<input type="text" id="grau" class="form-control" th:name="grau" />
+<!-- 						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div> -->
+					</div>
+					
+					<div class="form-group">
+						<label for="curso">Curso:</label> 
+						<input type="text" id="curso" class="form-control" th:name="curso" />
+<!-- 						<div th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}">vagas Error</div> -->
+					</div>
+					
+					<div class="form-group">
+						<label for="instituicao">Instituição:</label> 
+						<input type="text" id="instituicao" class="form-control" th:name="instituicao" />
+<!-- 						<div th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}">vagas Error</div> -->
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="dataInicio">Início:</label> 
+								<input type="text" id="dataInicio" class="form-control datepicker" th:name="dataInicio" />
+		<!-- 						<div th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}">vagas Error</div> -->
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="dataConclusão">Conclusão:</label> 
+								<input type="text" id="dataConclusão" class="form-control datepicker" th:name="dataConclusão" />
+		<!-- 						<div th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}">vagas Error</div> -->
+							</div>
+						</div>
+						<div class="col-md-6"></div>
+					</div>
+					<div>
+						<input type="submit" class="btn btn-primary" value="Incluir" />
+						<a href="#" class="btn btn-primary cancelar">Cancelar</a>
+					</div>
+				</form>
+		    </div>
+		  </div>
+		</div>
+     	
+        <div>
+        	<a th:href="@{/professor/{id}/edit(id=${professor.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/professor/{id}/delete(id=${professor.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/professor}" class="btn btn-primary">Cancelar</a>
+        </div>
+      </div>
+    </div>
+
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+    <script>
+	$(document).ready(function(){
+		$(".formCadFormacao").hide();
+	
+	    $(function() {
+			$( ".datepicker" ).datepicker({
+			    dateFormat: 'dd/mm/yy',
+			    changeYear: true,
+			    changeMonth: true,
+			    yearRange : '1900:2200',
+			    gotoCurrent : true,
+			    showButtonPanel: false            
+			});
+		});
+
+	    $('[data-toggle="tooltip"]').tooltip();		
+	});
+
+	$( ".real" ).prepend( "<span>R$</span>" );
+
+	$(document).on("click", '.delete', function (event) {
+		if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	    }
+	});
+
+	$(document).on("click", '.incluir', function (event) {
+		$(".formCadFormacao").show();
+		$("#grau").focus();
+	});
+	
+	$(document).on("click", '.cancelar', function (event) {
+        $(".formCadFormacao").hide();
+        $("#grau").val('');
+        $("#curso").val('');
+        $("#instituicao").val('');
+        $("#dataInicio").val('');
+        $("#dataConclusão").val('');
+	});		
+	</script>
+	<div th:utext="${msginfo}"></div>
+  </body>
+</html>

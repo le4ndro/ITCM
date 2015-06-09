@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+		
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/turma}" >Turmas</a></li>
+				  <li><a href="@{/turma/{id}/detail(id=${ingresso.turma.id})}" > <span th:text="${ingresso.turma.name}"></span></a></li>
+				  <li><a href="@{/ingresso/{id}/detail(id=${ingresso.id})}" class="active"> <span th:text="${ingresso.turma.name} + ' - ' + ${ingresso.aluno.name}"></span> </a></li>
+				  <li><a href="#" class="active"> <span th:text="${ingresso.turma.name} + ' - ' + ${ingresso.aluno.name} + ' - Lançamento'"></span> </a></li>
+				</ol>
+			</div>
+			
+			<div class="page-header">
+				<h1>Lançar Pagamento</h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+
+			<form  th:action="@{${#httpServletRequest.servletPath}}" method="post" data-parsley-validate="">
+			
+				<div class="row">
+					<div class="col-md-8">
+						<div class="well well-lg">
+							<div class="col-md-6">
+								<strong>Data de Vencimento: </strong><span id="dtVenc"></span>
+							</div>
+							<div class="col-md-4">
+								<strong>Valor: </strong><span>R$ </span><span id="vlParcela"></span>
+							</div>
+							<br/>
+						</div>
+					</div>
+				</div>
+			
+				<div class="row">
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="parcelas">Parcela</label> 
+							<select id="parcelas" class="form-control" th:name="id">
+								  <option th:each="parcela : ${parcelasAPagar}" 
+								          th:value="${parcela.id}" 
+								          th:text="${parcela.numeroParcela}">Wireframe</option>
+							</select>
+<!-- 							<div th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}">unidade Error</div> -->
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="dataPagamento">Data de Pagamento <span style="color:red;">*</span></label> 
+							<input type="text" id="dataPagamento" class="form-control datepicker" th:name="dataPagamento"  data-parsley-validate=""/>
+<!-- 							<div th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}">dataInicio Error</div> -->
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label for="valorPago">Valor Pago <span style="color:red;">*</span></label> 
+							<input type="text" id="valorPago" class="form-control" th:name="valorPago"  data-parsley-validate=""/>
+<!-- 							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div> -->
+						</div>
+					</div>
+				</div>
+				
+				
+								
+
+				<div>
+					<input type="submit" class="btn btn-primary" th:value="Incluir" />
+<!-- 					<a th:href="@{/turma}" class="btn btn-primary">Incluir</a> -->
+					<a th:href="@{/ingresso/{id}/detail(id=${ingresso.id})}" class="btn btn-primary">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+	<script>
+		function carregaData(master, path){
+			$(master).change(function(){
+				var id = $(master).val();
+				var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + path;
+			    $.getJSON( url + id, function( data ) {
+				    var dtVenc = new Date(data.dataVencimento);
+			    	$("#dtVenc").text(dtVenc.toLocaleDateString("pt-BR"));
+		    		$("#vlParcela").text(data.valor);
+
+		    		$("#valorPago").val(data.valor);
+		    		var hoje = new Date()
+		    		$("#dataPagamento").val(hoje.toLocaleDateString("pt-BR"));
+			   	});
+			});
+		}
+		carregaData("#parcelas", "/api/loaddata/parcela/");
+		$("#parcelas").trigger('change');
+	</script>
+  	<div th:utext="${msginfo}"></div>
+</body>
+</html>

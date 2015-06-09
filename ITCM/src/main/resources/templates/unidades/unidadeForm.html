@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/empresa}" >Empresas</a></li>
+				  <li><a href="#" > <span th:text="${unidade.empresa.name}"></span> </a></li>
+				  <li><a href="#" class="active"> <span th:text="(${unidade['new']} ? 'Nova Unidade' : ${unidade.name})"></span> </a></li>
+				</ol>
+			</div>
+			<div class="page-header">
+				<h1><span th:text="(${unidade['new']} ? 'Nova Unidade para ' + ${unidade.empresa.name} : ${unidade.name})"></span></h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+
+			<form th:action="@{${#httpServletRequest.servletPath}}" th:object="${unidade}" method="post" data-parsley-validate="">
+				<div>
+					
+					<div class="form-group">
+						<label for="name">Nome <span style="color:red;">*</span></label> 
+						<input type="text" id="name" class="form-control" th:field="*{name}" data-parsley-required="true"/>
+						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="descricao">Descrições</label> 
+						<textarea name="descricao" id="obs" rows="10" cols="80"
+							th:field="*{descricao}" class="ckeditor">
+            			</textarea>	
+						<div th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">descricao Error</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="obs">Observações</label> 
+						<textarea name="obs" id="obs" rows="10" cols="80"
+							th:field="*{obs}" class="ckeditor">
+            			</textarea>	
+						<div th:if="${#fields.hasErrors('obs')}" th:errors="*{obs}">obs Error</div>
+					</div>
+				</div>				
+				 
+				 <div>
+					<h3>Endereço</h3>
+					
+					<div class="form-group">
+						<label for="enderecologradouro">Logradouro <span style="color:red;">*</span></label> 
+						<input type="text" id="enderecologradouro" class="form-control" th:field="*{endereco.logradouro}" data-parsley-required="true"/>
+						<div th:if="${#fields.hasErrors('endereco.logradouro')}" th:errors="*{endereco.logradouro}">endereco.logradouro Error</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="enderecocomplemento">Complemento</label> 
+						<input type="text" id="enderecocomplemento" class="form-control" th:field="*{endereco.complemento}" />
+						<div th:if="${#fields.hasErrors('endereco.complemento')}" th:errors="*{endereco.complemento}">endereco.complemento Error</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecobairro">Bairro <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecobairro" class="form-control" th:field="*{endereco.bairro}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}">endereco.bairro Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecocidade">Cidade <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecocidade" class="form-control" th:field="*{endereco.cidade}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('endereco.cidade')}" th:errors="*{endereco.cidade}">endereco.cidade Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecoUF">UF <span style="color:red;">*</span></label> 
+								<input type="text" id="enderecoUF" class="form-control upper" th:field="*{endereco.UF}" data-parsley-required="true" maxlength="2"/>
+								<div th:if="${#fields.hasErrors('endereco.UF')}" th:errors="*{endereco.UF}">endereco.UF Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="enderecoCEP">CEP</label> 
+								<input type="text" id="enderecoCEP" class="form-control cep" th:field="*{endereco.CEP}" />
+								<div th:if="${#fields.hasErrors('endereco.CEP')}" th:errors="*{endereco.CEP}">endereco.CEP Error</div>
+							</div>
+						</div>
+					</div>
+				</div> 
+				  
+			 <div>
+					<h3>Dados de Contato</h3>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel1">Telefone 1</label> 
+								<input type="text" id="tel1" class="form-control telefone" th:field="*{contato.tel1}" />
+								<div th:if="${#fields.hasErrors('contato.tel1')}" th:errors="*{contato.tel1}">contato.tel1 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel2">Telefone 2</label> 
+								<input type="text" id="tel2" class="form-control telefone" th:field="*{contato.tel2}" />
+								<div th:if="${#fields.hasErrors('contato.tel2')}" th:errors="*{contato.tel2}">contato.tel2 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="tel3">Telefone 3</label> 
+								<input type="text" id="tel3" class="form-control telefone" th:field="*{contato.tel3}" />
+								<div th:if="${#fields.hasErrors('contato.tel3')}" th:errors="*{contato.tel3}">contato.tel3 Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="movel">Celular</label> 
+								<input type="text" id="movel" class="form-control movel" th:field="*{contato.movel}" />
+								<div th:if="${#fields.hasErrors('contato.movel')}" th:errors="*{contato.movel}">contato.movel Error</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="fax">Fax</label> 
+								<input type="text" id="fax" class="form-control fax" th:field="*{contato.fax}" />
+								<div th:if="${#fields.hasErrors('contato.fax')}" th:errors="*{contato.fax}">contato.fax Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="site">Site</label> 
+								<input type="text" id="site" class="form-control" th:field="*{contato.site}" data-parsley-type="url"/>
+								<div th:if="${#fields.hasErrors('contato.site')}" th:errors="*{contato.site}">contato.site Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="email">E-mail</label> 
+								<input type="text" id="email" class="form-control" th:field="*{contato.email}" data-parsley-type="email" />
+								<div th:if="${#fields.hasErrors('contato.email')}" th:errors="*{contato.email}">contato.email Error</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="skype">Skype</label> 
+								<input type="text" id="skype" class="form-control" th:field="*{contato.skype}" />
+								<div th:if="${#fields.hasErrors('contato.skype')}" th:errors="*{contato.skype}">contato.skype Error</div>
+							</div>
+						</div>
+					</div>
+				
+				
+			</div>	
+				 
+				<div>
+					<input type="submit" class="btn btn-primary" th:value="(${unidade['new']} ? 'Incluir' : 'Atualizar')" />
+					<a th:href="@{/empresa/{id}/detail(id=${unidade.empresa.id})}" class="btn btn-primary">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+    <div th:utext="${msginfo}"></div>
+</body>
+</html>

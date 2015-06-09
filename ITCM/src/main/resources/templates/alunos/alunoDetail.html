@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+      <div class="row-fluid">
+	       <ol class="breadcrumb">
+			  <li><a th:href="@{/}" >Home</a></li>
+			  <li><a th:href="@{/aluno}" >Alunos</a></li>
+			  <li><a href="#" class="active"> <span th:text="${aluno.name}"></span> </a></li>
+			</ol>
+		</div>
+       
+       <div class="page-header"> 
+       		<h1 th:text="${aluno.name}">Aluno</h1>
+       </div>
+       
+       <div>
+        	<a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/aluno/{id}/delete(id=${aluno.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/aluno}" class="btn btn-primary">Cancelar</a>
+        </div>
+        <br/>
+       
+       <div class="panel panel-default">
+		  <div class="panel-body">
+		     
+		     <div class="row">
+		     	<div class="col-md-3">
+		     		<strong> Matrícula: </strong><span th:text="${aluno.matricula}"></span>		        	
+		     	</div>
+		     	<div class="col-md-3">
+		     		<strong> Data Nascimento: </strong>
+		        	<span th:text="${aluno.dataDeNascimento} ? ${#dates.format(aluno.dataDeNascimento, 'dd/MM/yyyy')}">dataDeNascimento</span>
+		     	</div>
+		     </div>
+		    <br/>
+		    
+		    <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Observações</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${aluno.obs}">
+			    Panel content
+			  </div>
+			</div>
+		    
+		  </div>
+		</div>
+        
+       <div class="panel panel-default" th:if="${aluno.identificacao} != null">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Identificação</h3>
+		  </div>
+		  <div class="panel-body">		  		     
+		     
+		     <div class="row">
+			     <div class="col-md-3">
+			      	<strong> RG: </strong>
+			        <span th:text="${aluno.identificacao.rg}">rg</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> RG UF: </strong>
+			        <span th:text="${aluno.identificacao.rgUF}">rgUF</span>
+			      </div>
+			     <div class="col-md-3">
+			      	<strong> RG Orgão Emissor: </strong>
+			        <span th:utext="${aluno.identificacao.rgOrgaoEmissor}">rgOrgaoEmissor</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> RG Data Expedição: </strong>
+			        <span th:text="${aluno.identificacao.rgDataExpedicao} ? ${#dates.format(aluno.identificacao.rgDataExpedicao, 'dd/MM/yyyy')}">rgDataExpedicao</span>
+			      </div>
+			  </div>
+			  <br/>    
+			  <div class="row">    
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral: </strong>
+			        <span th:text="${aluno.identificacao.tituloEleitoral}">tituloEleitoral</span>
+			      </div>
+			      
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral Zona: </strong>
+			        <span th:text="${aluno.identificacao.tituloEleitoralZona}">tituloEleitoralZona</span>
+			      </div>  
+			      <div class="col-md-3">
+			      	<strong> Título Eleitoral Seção: </strong>
+			        <span th:text="${aluno.identificacao.tituloEleitoralSecao}">tituloEleitoralSecao</span>
+			      </div> 
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Cert. de Reservista: </strong>
+			        <span th:text="${aluno.identificacao.certificadoDeReservista}">certificadoDeReservista</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Carteira de Trabalho: </strong>
+			        <span th:text="${aluno.identificacao.carteiraDeTrabalho}">carteiraDeTrabalho</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Estado Civil: </strong>
+			        <span th:text="${aluno.identificacao.estadoCivil}">estadoCivil</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Sexo: </strong>
+			        <span th:text="${aluno.identificacao.sexo}">sexo</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Naturalidade: </strong>
+			        <span th:text="${aluno.identificacao.naturalidade}">naturalidade</span>
+			      </div>
+		     </div>
+		     
+		  </div>
+		</div> 
+        
+       <div class="panel panel-default" th:if="${aluno.endereco} != null">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Endereço</h3>
+		  </div>
+		  <div class="panel-body">
+		     
+		     <div class="row">
+			     <div class="col-md-12">
+			      	<strong> Logradouro: </strong>
+			        <span th:text="${aluno.endereco.logradouro}">logradouro</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-12">
+			      	<strong> Complemento: </strong>
+			        <span th:text="${aluno.endereco.complemento}">complemento</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Bairro: </strong>
+			        <span th:utext="${aluno.endereco.bairro}">bairro</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Cidade: </strong>
+			        <span th:utext="${aluno.endereco.cidade}">cidade</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> UF: </strong>
+			        <span th:text="${aluno.endereco.UF}">UF</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> CEP: </strong>
+			        <span th:text="${aluno.endereco.CEP}">CEP</span>
+			      </div>  
+		      </div>
+		  </div>
+		</div>  
+       
+       <div class="panel panel-default" th:if="${aluno.endereco} != null">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Contato</h3>
+		  </div>
+		  <div class="panel-body">
+		     
+		     
+		     <div class="row">
+			     <div class="col-md-3">
+			      	<strong> Telefone 1: </strong>
+			        <span th:text="${aluno.contato.tel1}">tel1</span>
+			      </div>
+			      <div class="col-md-3" th:if="${aluno.contato.tel2} != ''">
+			      	<strong> Telefone 2: </strong>
+			        <span th:text="${aluno.contato.tel2}">tel2</span>
+			      </div>
+			     <div class="col-md-3" th:if="${aluno.contato.tel3} != ''">
+			      	<strong> Telefone 3: </strong>
+			        <span th:utext="${aluno.contato.tel3}">tel3</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Fax: </strong>
+			        <span th:utext="${aluno.contato.fax}">fax</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Site: </strong>
+			        <span th:text="${aluno.contato.site}">site</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> E-mail: </strong>
+			        <span th:text="${aluno.contato.email}">email</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Skype: </strong>
+			        <span th:text="${aluno.contato.skype}">skype</span>
+			      </div>   
+		      </div>
+		     
+		     
+		  </div>
+		</div>
+		
+	   <div class="row"> 
+	       <div th:if="${aluno.responsavel} == null" class="col-md-1 offset-md-1">
+	       		<a th:href="@{/responsavel/aluno/{id}/new(id=${aluno.id})}" class="btn btn-primary">Incluir Responsável</a>
+	       </div>
+	   </div>
+	   <br/>
+       
+       <!-- Inicio Responsavel -->
+       <div th:if="${aluno.responsavel} != null" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	       <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Responsável</a></h3>
+			  </div>
+			  <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			  <div class="panel-body">
+			    <div class="row">
+			      <div class="col-md-12">
+			      	<strong> Nome: </strong>
+			        <span th:text="${aluno.responsavel.name}">nome</span>
+			      </div>
+			    </div>
+			    <br/>
+			  
+			  
+				<div class="panel panel-default" th:if="${aluno.responsavel.identificacao} != null">
+					  <div class="panel-heading">
+					    <h3 class="panel-title">Identificação</h3>
+					  </div>
+					  <div class="panel-body">
+					     
+					     <div class="row">
+						     <div class="col-md-3">
+						      	<strong> RG: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.rg}">rg</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> RG UF: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.rgUF}">rgUF</span>
+						      </div>
+						     <div class="col-md-3">
+						      	<strong> RG Orgão Emissor: </strong>
+						        <span th:utext="${aluno.responsavel.identificacao.rgOrgaoEmissor}">rgOrgaoEmissor</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> RG Data Expedição: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.rgDataExpedicao} ? ${#dates.format(aluno.responsavel.identificacao.rgDataExpedicao, 'dd/MM/yyyy')}">rgDataExpedicao</span>
+						      </div>
+						  </div>
+						  <br/>    
+						  <div class="row">    
+						      <div class="col-md-3">
+						      	<strong> Título Eleitoral: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.tituloEleitoral}">tituloEleitoral</span>
+						      </div>
+						      
+						      <div class="col-md-3">
+						      	<strong> Título Eleitoral Zona: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.tituloEleitoralZona}">tituloEleitoralZona</span>
+						      </div>  
+						      <div class="col-md-3">
+						      	<strong> Título Eleitoral Seção: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.tituloEleitoralSecao}">tituloEleitoralSecao</span>
+						      </div> 
+					      </div>
+					      <br/>
+					      <div class="row">
+						      <div class="col-md-3">
+						      	<strong> Cert. de Reservista: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.certificadoDeReservista}">certificadoDeReservista</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> Carteira de Trabalho: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.carteiraDeTrabalho}">carteiraDeTrabalho</span>
+						      </div>
+					      </div>
+					      <br/>
+					      <div class="row">
+						      <div class="col-md-3">
+						      	<strong> Estado Civil: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.estadoCivil}">estadoCivil</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> Sexo: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.sexo}">sexo</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> Naturalidade: </strong>
+						        <span th:text="${aluno.responsavel.identificacao.naturalidade}">naturalidade</span>
+						      </div>
+					     </div>
+					     
+					     
+					  </div>
+					</div> 
+			  		<br/>
+			  		<div class="panel panel-default" th:if="${aluno.responsavel.endereco} != null">
+					  <div class="panel-heading">
+					    <h3 class="panel-title">Endereço</h3>
+					  </div>
+					  <div class="panel-body">					  
+					     
+					     <div class="row">
+						     <div class="col-md-12">
+						      	<strong> Logradouro: </strong>
+						        <span th:text="${aluno.responsavel.endereco.logradouro}">logradouro</span>
+						      </div>
+					      </div>
+					      <br/>
+					      <div class="row">
+						      <div class="col-md-12">
+						      	<strong> Complemento: </strong>
+						        <span th:text="${aluno.responsavel.endereco.complemento}">complemento</span>
+						      </div>
+					      </div>
+					      <br/>
+					      <div class="row">
+						      <div class="col-md-3">
+						      	<strong> Bairro: </strong>
+						        <span th:utext="${aluno.responsavel.endereco.bairro}">bairro</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> Cidade: </strong>
+						        <span th:utext="${aluno.responsavel.endereco.cidade}">cidade</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> UF: </strong>
+						        <span th:text="${aluno.responsavel.endereco.UF}">UF</span>
+						      </div>
+						      <div class="col-md-3">
+						      	<strong> CEP: </strong>
+						        <span th:text="${aluno.responsavel.endereco.CEP}">CEP</span>
+						      </div>  
+					      </div>
+					     
+					  </div>
+					</div>
+					<br/>
+					<div class="panel panel-default" th:if="${aluno.responsavel.contato} != null">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Contato</h3>
+						  </div>
+						  <div class="panel-body">						 
+						     
+						     <div class="row">
+							     <div class="col-md-3">
+							      	<strong> Telefone 1: </strong>
+							        <span th:text="${aluno.responsavel.contato.tel1}">tel1</span>
+							      </div>
+							      <div class="col-md-3" th:if="${aluno.responsavel.contato.tel2} != ''">
+							      	<strong> Telefone 2: </strong>
+							        <span th:text="${aluno.responsavel.contato.tel2}">tel2</span>
+							      </div>
+							     <div class="col-md-3" th:if="${aluno.responsavel.contato.tel3} != ''">
+							      	<strong> Telefone 3: </strong>
+							        <span th:utext="${aluno.responsavel.contato.tel3}">tel3</span>
+							      </div>
+						      </div>
+						      <br/>
+						      <div class="row">
+							      <div class="col-md-3">
+							      	<strong> Fax: </strong>
+							        <span th:utext="${aluno.responsavel.contato.fax}">fax</span>
+							      </div>
+							      <div class="col-md-3">
+							      	<strong> Site: </strong>
+							        <span th:text="${aluno.responsavel.contato.site}">site</span>
+							      </div>
+							      <div class="col-md-3">
+							      	<strong> E-mail: </strong>
+							        <span th:text="${aluno.responsavel.contato.email}">email</span>
+							      </div>
+							      <div class="col-md-3">
+							      	<strong> Skype: </strong>
+							        <span th:text="${aluno.responsavel.contato.skype}">skype</span>
+							      </div>   
+						      </div>
+						     
+						     
+						</div>
+					    
+					</div>
+					<div class="folga-botoes">
+						<div class="col-md-2 offset-md-1">
+				       		<a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-primary">Editar</a>
+				       		<a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-primary">Excluir</a>
+			       		</div>
+		       		</div>
+				 </div>
+		    </div>
+		 </div>
+		  
+	   </div><!-- fim responsavel -->
+           	
+        <div>
+        	<a th:href="@{/aluno/{id}/edit(id=${aluno.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/aluno/{id}/delete(id=${aluno.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/aluno}" class="btn btn-primary">Cancelar</a>
+        </div>
+    </div>
+</div>
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+	<script>
+	$('.collapse').collapse()
+	$(document).on("click", '.delete', function (event) {
+		if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	    }
+	});
+	</script>
+	<div th:utext="${msginfo}"></div>
+  </body>
+</html>

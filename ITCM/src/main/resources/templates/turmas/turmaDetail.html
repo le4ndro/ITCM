@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+      	<div class="row-fluid">
+	       <ol class="breadcrumb">
+			  <li><a th:href="@{/}" >Home</a></li>
+			  <li><a th:href="@{/turma}" >Turmas</a></li>
+			  <li><a href="#" class="active"> <span th:text="${turma.name}"></span> </a></li>
+			</ol>
+		</div>
+       
+       <div class="page-header"> 
+       		<h1 th:text="${turma.name}">Turma</h1>
+       </div>
+       
+        <p>
+	     	<a th:href="@{/ingresso/turma/{id}/new(id=${turma.id})}" class="btn btn-primary">Nova Inscrição</a>
+	   	</p>
+       
+       <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title"></h3>
+		  </div>
+		  <div class="panel-body">
+		     
+		     
+			<div class="row">		     
+		      <div class="col-md-6">
+		      	<strong> Curso: </strong>
+		        <span th:text="${turma.curso.name}">curso</span>
+		      </div>
+		      <div class="col-md-2">
+			      	<strong> Vagas Oferecidas: </strong>
+			        <span th:utext="${turma.ambiente.vagas}">ambiente</span>
+			      </div>
+			      <div class="col-md-2">
+			      	<strong> Vagas Restantes: </strong>
+			        <span th:utext="${vagasRestantes}">ambiente</span>
+			      </div>
+		    </div>
+		    <br/>
+		    <div class="row">  
+			     <div class="col-md-4">
+			      	<strong> Unidade: </strong>
+			        <span th:utext="${turma.unidade.name}">unidade</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Sala: </strong>
+			        <span th:utext="${turma.ambiente.name}">ambiente</span>
+			      </div>
+			      
+		    </div>
+		    <br/>
+		    <div class="row">
+		      <div class="col-md-12">
+		      	<strong> Professor: </strong>
+		        <span th:text="${turma.professor.name}">professor</span>
+		      </div>
+		    </div>
+		    <br/>
+		    <div class="row">
+		      <div class="col-md-2">
+		      	<strong> Início: </strong>
+		        <span th:text="${turma.dataInicio} ? ${#dates.format(turma.dataInicio, 'dd/MM/yyyy')}">dataInicio</span>
+		      </div>  
+		      <div class="col-md-2">
+		      	<strong> Término: </strong>
+		        <span th:text="${turma.dataTermino} ? ${#dates.format(turma.dataTermino, 'dd/MM/yyyy')}">dataTermino</span>
+		      </div>
+		      <div class="col-md-2">
+		      	<strong> Dias: </strong>
+		        <span th:text="${turma.dias}">dias</span>
+		      </div>
+		      <div class="col-md-2">
+		      	<strong> Hora Início: </strong>
+		        <span th:text="${turma.horaInicio}">horaInicio</span>
+		      </div>
+		      <div class="col-md-2">
+		      	<strong> Hora Término: </strong>
+		        <span th:text="${turma.horaTermino}">horaTermino</span>
+		      </div>
+		     </div>
+		     <br/>
+		     
+		    <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Observações</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${turma.obs}">
+			    Panel content
+			  </div>
+			</div>
+		    
+		  </div>
+		</div>
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Inscritos</h3>
+		  </div>
+		  <div class="panel-body">
+		  
+		  	<p>
+		     	<a th:href="@{/ingresso/turma/{id}/new(id=${turma.id})}" class="btn btn-primary">Nova Inscrição</a>
+		   	</p>
+		  
+		    <table class="table table-bordered">
+		      <thead>
+		      <tr>
+		        <th>Id</th>
+		        <th>Nome</th>
+		        <th>Data de Inscrição</th>
+		        <th>Status</th>
+		        <th></th>
+		      </tr>
+		      </thead>
+		      
+		      
+		      <tbody>
+		      <tr th:each="ingresso : ${turma.ingressos}">
+		        <td th:text="${ingresso.id}">id</td>
+		        <td th:text="${ingresso.aluno.name}">nome</td>
+		        <td th:text="${ingresso.dataIngresso}">data ingresso</td>
+		        <td th:text="${ingresso.status}">data ingresso</td>
+		        <td>
+		        	<a th:href="@{/ingresso/{id}/edit(id=${ingresso.id})}" class=" btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+		        	<a th:href="@{/ingresso/{id}/delete(id=${ingresso.id})}" class="delete btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Excluir"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+		        	<a th:href="@{/ingresso/{id}/detail(id=${ingresso.id})}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Ver detalhes"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+		        </td>
+		      </tr>
+		      </tbody>
+		      
+		    </table>
+		  </div>
+		</div>
+	      	
+        <div>
+        	<a th:href="@{/turma/{id}/edit(id=${turma.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/turma/{id}/delete(id=${turma.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/turma}" class="btn btn-primary">Cancelar</a>
+        </div>
+      </div>
+    </div>
+
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+	<script>
+	$(document).ready(function() {
+	    $('[data-toggle="tooltip"]').tooltip();
+	} );
+	$(document).on("click", '.delete', function (event) {
+		if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	    }
+	});
+	</script>
+	<div th:utext="${msginfo}"></div>
+  </body>
+</html>

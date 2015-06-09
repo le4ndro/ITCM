@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+       		<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/empresa}" >Empresas</a></li>
+				  <li><a href="@{/empresa/{id}/detail(id=${unidade.empresa.id})}" > <span th:text="${unidade.empresa.name}"></span> </a></li>
+				  <li><a href="#" class="active"> <span th:text="${unidade.name}"></span> </a></li>
+				</ol>
+			</div>
+       <div class="page-header"> 
+       		<h1 th:text="${unidade.name}">Unidade</h1>
+       </div>
+       <div>
+        	<a th:href="@{/unidade/{id}/edit(id=${unidade.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/unidade/{id}/delete(id=${unidade.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/empresa/{id}/detail(id=${unidade.empresa.id})}" class="btn btn-primary">Cancelar</a>
+        </div>
+        <br/>
+       
+       <div class="panel panel-default">
+		  
+		  <div class="panel-body">
+		    
+		     <div class="row">
+		      <div class="col-md-12">
+		      	<strong> Ativa: </strong>
+		        <span th:text="${unidade.ativa}">ativa</span>
+		      </div> 
+		     </div>
+		     <br/>
+		     
+		    <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Descrição</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${unidade.descricao}">
+			    Panel content
+			  </div>
+			</div>
+			
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Observações</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${unidade.obs}">
+			    Panel content
+			  </div>
+			</div>
+		    
+		  </div>
+		</div>
+        
+        <div class="panel panel-default" th:if="${unidade.endereco} != null">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Endereço</h3>
+		  </div>
+		  <div class="panel-body">
+		     
+		     <div class="row">
+			     <div class="col-md-12">
+			      	<strong> Logradouro: </strong>
+			        <span th:text="${unidade.endereco.logradouro}">logradouro</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-12">
+			      	<strong> Complemento: </strong>
+			        <span th:text="${unidade.endereco.complemento}">complemento</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Bairro: </strong>
+			        <span th:utext="${unidade.endereco.bairro}">bairro</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Cidade: </strong>
+			        <span th:utext="${unidade.endereco.cidade}">cidade</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> UF: </strong>
+			        <span th:text="${unidade.endereco.UF}">UF</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> CEP: </strong>
+			        <span th:text="${unidade.endereco.CEP}">CEP</span>
+			      </div>  
+		      </div>
+		     
+		  </div>
+		</div> 
+             
+        <div class="panel panel-default" th:if="${unidade.contato} != null">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Contato</h3>
+		  </div>
+		  <div class="panel-body">
+		  	
+		     
+		     <div class="row">
+			     <div class="col-md-3">
+			      	<strong> Telefone 1: </strong>
+			        <span th:text="${unidade.contato.tel1}">tel1</span>
+			      </div>
+			      <div class="col-md-3" th:if="${unidade.contato.tel2} != ''">
+			      	<strong> Telefone 2: </strong>
+			        <span th:text="${unidade.contato.tel2}">tel2</span>
+			      </div>
+			     <div class="col-md-3" th:if="${unidade.contato.tel3} != ''">
+			      	<strong> Telefone 3: </strong>
+			        <span th:utext="${unidade.contato.tel3}">tel3</span>
+			      </div>
+		      </div>
+		      <br/>
+		      <div class="row">
+			      <div class="col-md-3">
+			      	<strong> Fax: </strong>
+			        <span th:utext="${unidade.contato.fax}">fax</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Site: </strong>
+			        <span th:text="${unidade.contato.site}">site</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> E-mail: </strong>
+			        <span th:text="${unidade.contato.email}">email</span>
+			      </div>
+			      <div class="col-md-3">
+			      	<strong> Skype: </strong>
+			        <span th:text="${unidade.contato.skype}">skype</span>
+			      </div>   
+		      </div>
+		     
+		  </div>
+		</div>
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Ambientes</h3>
+		  </div>
+		  <div class="panel-body">
+		  
+		  	<p>
+		     	<button id="btIncluir" class="btn btn-primary">Novo Ambiente</button>
+		   	</p>
+		  
+		    <table class="table table-bordered">
+		      <thead>
+		      <tr>
+		        <th>Id</th>
+		        <th>Nome</th>
+		        <th>Vagas</th>
+		        <th></th>
+		      </tr>
+		      </thead>
+		      
+		      
+		      <tbody>
+		      <tr th:each="ambiente : ${unidade.ambientes}">
+		        <td th:text="${ambiente.id}">id</td>
+		        <td th:text="${ambiente.name}">nome</td>
+		        <td th:text="${ambiente.vagas}">tel</td>
+		        <td>
+<!-- 		        	<a th:href="@{/ambiente/{id}/edit(id=${ambiente.id})}" class="btn btn-primary btn-xs">Editar</a> -->
+		        	<a th:href="@{/ambiente/{id}/delete(id=${ambiente.id})}" id="btDelete" class="btn btn-primary btn-xs">Delete</a>
+<!-- 		        	<a th:href="@{/ambiente/{id}/detail(id=${ambiente.id})}" class="btn btn-primary btn-xs">Detalhes</a> -->
+		        </td>
+		      </tr>
+		      </tbody>
+		      
+		    </table>
+		    
+		    <div id="formCadAmbiente">
+		    	<h3>Novo Ambiente</h3>
+			    <form th:action="@{/ambiente/unidade/{id}/new(id=${unidade.id})}" method="post" data-parsley-validate="">
+					<div class="form-group">
+						<label for="name">Nome:</label> 
+						<input type="text" id="name" class="form-control" th:name="name" />
+<!-- 						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div> -->
+					</div>
+					<div class="form-group">
+						<label for="descricao">Descrição:</label>
+						<textarea name="descricao" id="descricao" rows="10" cols="80" th:name="descricao" class="ckeditor">
+	            		</textarea>	
+<!-- 						<div th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">Descricao Error</div> -->
+					</div>
+					<div class="form-group">
+						<label for="vagas">Vagas:</label> 
+						<input type="text" id="vagas" class="form-control" th:name="vagas" />
+<!-- 						<div th:if="${#fields.hasErrors('vagas')}" th:errors="*{vagas}">vagas Error</div> -->
+					</div>
+					
+					<div class="form-group">
+						<label for="obs">Observações:</label>
+						<textarea name="obs" id="obs" rows="10" cols="80" th:name="obs" class="ckeditor">
+	            		</textarea>	
+<!-- 						<div th:if="${#fields.hasErrors('obs')}" th:errors="*{obs}">obs Error</div> -->
+					</div>
+					<div>
+						<input type="submit" class="btn btn-primary" value="Incluir" />
+						<a id="btCancelar" href="#" class="btn btn-primary">Cancelar</a>
+					</div>
+				</form>
+		    </div>
+		  </div>
+		</div>
+	      	
+        <div>
+        	<a th:href="@{/unidade/{id}/edit(id=${unidade.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/unidade/{id}/delete(id=${unidade.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/empresa/{id}/detail(id=${unidade.empresa.id})}" class="btn btn-primary">Cancelar</a>
+        </div>
+      </div>
+    </div>
+
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+	<script>
+	$(document).ready(function(){
+		$("#formCadAmbiente").hide();
+	    $("#btCancelar").click(function(){
+	        $("#name").val('');
+	        $("#descricao").text('');
+	        $("#vagas").val('');
+	        $("#obs").text('');
+	        $("#formCadAmbiente").hide();
+	    });
+	    $("#btIncluir").click(function(){
+	        $("#formCadAmbiente").show();
+	        $("#name").focus();
+	    });
+	    $("#btDelete").click(function(){
+	        if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	        }
+	      });
+	});
+	
+	$(document).on("click", '.delete', function (event) {
+		if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	    }
+	});
+	</script>
+	<div th:utext="${msginfo}"></div>
+  </body>
+</html>

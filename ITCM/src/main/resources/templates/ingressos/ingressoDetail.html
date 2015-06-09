@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+      		 
+      		<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/turma}" >Turmas</a></li>
+				  <li><a href="@{/turma/{id}/detail(id=${ingresso.turma.id})}" > <span th:text="${ingresso.turma.name}"></span></a></li>
+				  <li><a href="#" class="active"> <span th:text="${ingresso.turma.name} + ' - ' + ${ingresso.aluno.name}"></span> </a></li>
+				</ol>
+			</div>
+       		
+       <div class="page-header"> 
+       		<h1 th:text="${ingresso.turma.name} + ' - ' + ${ingresso.aluno.name}">Ingresso</h1>
+       </div>
+       <div>
+        	<a th:href="@{/ingresso/{id}/edit(id=${ingresso.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/ingresso/{id}/delete(id=${ingresso.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/turma/{id}/detail(id=${ingresso.turma.id})}" class="btn btn-primary">Cancelar</a>
+        </div>
+       <br/>
+       <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title"></h3>
+		  </div>
+		  <div class="panel-body">
+		  <div class="row">
+		  	<div class="col-md-3">
+		  		<strong> Data de Inscrição: </strong><span th:text="${ingresso.dataIngresso} ? ${#dates.format(ingresso.dataIngresso, 'dd/MM/yyyy')}"></span>
+		  	</div>
+		  	<div class="col-md-3">
+		  		<strong> Situação da Inscrição: </strong> <span th:text="${ingresso.status}" ></span>
+		  	</div>
+		  </div>
+		  <br/>
+		    
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Observações</h3>
+			  </div>
+			  <div class="panel-body" th:utext="${ingresso.obs}">
+			    Panel content
+			  </div>
+			</div>
+		    
+		  </div>
+		</div>
+        
+        <div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Pagamento</h3>
+		  </div>
+		  <div class="panel-body">
+		    
+		    <div class="row">
+			    <div class="col-md-12">
+		    		<strong> Forma de Pagamento: </strong> <span th:text="${ingresso.pagamento.formaPagamento}"></span> 
+		    	</div>
+		    </div>
+		    <br/>
+		    <div class="row">
+		    	<div class="col-md-3">
+		    		<strong> Valor à Pagar: </strong><span th:if="${ingresso.pagamento.valorBruto}">R$ </span><span th:text="${ingresso.pagamento.valorBruto} ? ${#numbers.formatDecimal(ingresso.pagamento.valorBruto ,0,2,'COMMA')}"></span>
+		    	</div>
+		    	<div class="col-md-3">
+		    		<strong> Desconto: </strong> <span th:utext="${ingresso.pagamento.desconto}"></span><span>%</span>
+		    	</div>
+		    	<div class="col-md-3">
+		    		<strong> Valor Pago: </strong><span th:if="${ingresso.pagamento.valorPago}">R$ </span><span th:text="${ingresso.pagamento.valorPago} ? ${#numbers.formatDecimal(ingresso.pagamento.valorPago,0,2,'COMMA')}"></span>
+		    	</div>
+		    </div>
+		    <br/>
+		    <div>
+        		<a th:href="@{/pagamento/{id}/lancar(id=${ingresso.id})}" class="btn btn-primary">Lançar Pagamento</a>
+        	</div>
+		    <br/>
+		    
+	    		<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Parcelas</h3>
+				  </div>
+				  <div class="panel-body">
+				    <table class="table table-bordered">
+				      <thead>
+				      <tr>
+				        <th>Parcela</th>
+				        <th>Valor</th>
+				        <th>Data de Vencimento</th>
+				        <th>Data de Pagamento</th>
+				        <th>Valor Pago</th>
+				        
+				      </tr>
+				      </thead>
+				      <tbody>
+				      <tr th:each="parcela : ${ingresso.pagamento.parcelas}">
+				        <td><span th:text="${parcela.numeroParcela}"></span> </td>
+				        <td><span>R$ </span> <span th:text="${#numbers.formatDecimal(parcela.valor,0,2,'COMMA')}"></span></td>
+				        <td><span th:text="${parcela.dataVencimento} ? ${#dates.format(parcela.dataVencimento, 'dd/MM/yyyy')}"></span></td>
+				        <td><span th:text="${parcela.dataPagamento} ? ${#dates.format(parcela.dataPagamento, 'dd/MM/yyyy')}"></span></td>				      
+				        <td><span th:if="${parcela.valorPago}">R$ </span><span th:text="${parcela.valorPago} ? ${#numbers.formatDecimal(parcela.valorPago,0,2,'COMMA')}"></span></td>
+				      </tr>
+				      </tbody>
+				      
+				    </table>
+				  </div>
+				</div> 
+		   
+		    
+		  </div>
+		  
+		  
+		</div> 
+	      	
+        <div>
+        	<a th:href="@{/ingresso/{id}/edit(id=${ingresso.id})}" class="btn btn-primary">Editar</a>
+	        <a th:href="@{/ingresso/{id}/delete(id=${ingresso.id})}" class="btn btn-primary delete">Delete</a>
+	        <a th:href="@{/turma/{id}/detail(id=${ingresso.turma.id})}" class="btn btn-primary">Cancelar</a>
+        </div>
+      </div>
+    </div>
+
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+	<script>
+	$(document).on("click", '.delete', function (event) {
+		if (!confirm("Deseja realmente exluir o item ?")){
+	          return false;
+	    }
+	});
+	</script>
+	<div th:utext="${msginfo}"></div>
+  </body>
+</html>

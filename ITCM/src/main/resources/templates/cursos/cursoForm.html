@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/curso}" >Cursos</a></li>
+				  <li><a href="#" class="active"> <span th:text="(${curso['new']} ? 'Novo Curso' : ${curso.name})"></span> </a></li>
+				</ol>
+			</div>
+			<div class="page-header">
+				<h1><span th:text="(${curso['new']} ? 'Novo Curso' : ${curso.name})"></span></h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+
+			<form class="frm" th:action="@{${#httpServletRequest.servletPath}}" th:object="${curso}" method="post" data-parsley-validate="">
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="name">Nome <span style="color:red;">*</span></label> <input type="text" id="name" class="form-control" th:field="*{name}" data-parsley-required="true"/>
+							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="cargaHoraria">Carga Horária (horas) <span style="color:red;">*</span></label> 
+							<input type="text" id="cargaHoraria" class="form-control inteiro" th:field="*{cargaHoraria}" data-parsley-required="true" data-parsley-type="integer"/>
+							<div th:if="${#fields.hasErrors('cargaHoraria')}" th:errors="*{cargaHoraria}">CargaHoraria Error</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="valor">Valor <span style="color:red;">*</span></label> 
+							<input type="text" id="valor" class="form-control numero" th:field="*{valor}" data-parsley-required="true" data-parsley-pattern="[0-9]+([\.|,][0-9]+)?"/>
+							<div th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}">Valor Error</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="descricao">Descrição</label>
+					<textarea name="descricao" id="descricao" rows="10" cols="80"
+						th:field="*{descricao}" class="ckeditor">
+            		</textarea>	
+					<div th:if="${#fields.hasErrors('descricao')}"
+						th:errors="*{descricao}">Descricao Error</div>
+				</div>
+				<div class="form-group">
+					<label for="preRequisitos">Pré-requisitos</label> 
+					<textarea name="preRequisitos" id="preRequisitos" rows="10" cols="80"
+						th:field="*{preRequisitos}" class="ckeditor">
+            		</textarea>	
+					<div th:if="${#fields.hasErrors('preRequisitos')}"
+						th:errors="*{preRequisitos}">PreRequisitos Error</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="ementa">Ementa</label><br/><br/>
+					<textarea name="ementa" id="ementa" rows="10" cols="80"
+						th:field="*{ementa}" class="ckeditor">
+            		</textarea>
+					
+					<div th:if="${#fields.hasErrors('ementa')}" th:errors="*{ementa}">Ementa
+						Error</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="tags">Tags (separadas por ';')</label> <input type="text" id="tags"
+						class="form-control" th:field="*{tags}" />
+					<div th:if="${#fields.hasErrors('tags')}" th:errors="*{tags}">Tags
+						Error</div>
+				</div>
+
+				<div>
+					<input type="submit" class="btn btn-primary" th:value="(${curso['new']} ? 'Incluir' : 'Atualizar')" />
+					<a th:href="@{/curso}" class="btn btn-primary">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+    <div th:utext="${msginfo}"></div>
+</body>
+</html>

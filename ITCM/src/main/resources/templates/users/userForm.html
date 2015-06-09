@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="layout :: htmlhead" th:with="title='Hello'">
+
+</head>
+<body>
+	<div th:replace="layout :: navbar">(navbar)</div>
+
+	<div class="container">
+		<div class="starter-template">
+			<div class="row-fluid">
+				<ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>
+				  <li><a th:href="@{/user/list}" >Usuários</a></li>
+<!-- 				  <li><a href="#" class="active"> <span th:text="(${user['new']} ? 'Novo Usuário' : ${user.username})"></span> </a></li> -->
+				  <li><a href="#" >Novo Usuário</a></li>
+				</ol>
+			</div>
+			
+			<div class="page-header">
+<!-- 				<h1><span th:text="(${user['new']} ? 'Novo Professor' : ${user.username})"></span></h1>  -->
+				<h1>Novo Usuário</h1>
+			</div>
+			<div><span style="color:red;">*</span> Indica campos obrigatórios</div><br/><br/>
+			
+			
+			<form action="#" th:object="${user}" th:action="@{/user/save.html}" method="post" data-parsley-validate="">
+			
+				<div class="row">
+					<div class="col-md-6">
+						<fieldset>
+							<div class="form-group">
+								<label for="username">Nome <span style="color:red;">*</span></label> 
+								<input type="text" id="username" class="form-control" th:field="*{username}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</div>
+							</div>
+							<div class="form-group">
+								<label for="email">Email <span style="color:red;">*</span></label> 
+								<input type="text" id="email" class="form-control" th:field="*{email}" data-parsley-required="true" data-parsley-type="email"/>
+								<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</div>
+							</div>
+							<div class="form-group">
+								<label for="email2">Confirmar Email <span style="color:red;">*</span></label> 
+								<input type="text" id="email2" class="form-control" data-parsley-required="true" data-parsley-equalto="#email" data-parsley-type="email"/>
+							</div>
+							<div class="form-group">
+								<label for="passcheck">Senha <span style="color:red;">*</span></label> 
+								<input type="password" id="passcheck" class="form-control" th:field="*{password}" data-parsley-required="true"/>
+								<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
+							</div>
+							<div class="form-group">
+								<label for="passcheck2">Confirmar Senha <span style="color:red;">*</span></label> 
+								<input type="password" id="passcheck2" class="form-control" data-parsley-required="true" data-parsley-equalto="#passcheck"/>
+							</div>
+							
+							<div>
+								<input type="submit" class="btn btn-primary" value="Salvar" />
+								<a href="#" th:href="@{/user/list}" class="btn btn-primary">Cancelar</a>
+							</div>
+						</fieldset>
+					</div>	
+				</div>
+			 </form>
+		</div>
+	</div>
+
+	<div th:include="layout :: footer" id="footer">(footer)</div>
+	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
+	<script src="../static/js/jquery.pwstrength.bootstrap-1.2.5/pwstrength-bootstrap-1.2.5.min.js" th:src="@{/js/jquery.pwstrength.bootstrap-1.2.5/pwstrength-bootstrap-1.2.5.min.js}"></script>
+	<script>
+		$('#passcheck').pwstrength();
+	</script>
+    <div th:utext="${msginfo}"></div>
+</body>
+</html>
