@@ -1,7 +1,12 @@
 package br.com.imaginativo.itcm.web;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,20 +16,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.model.Interesse;
 import br.com.imaginativo.itcm.repository.InteresseRepository;
 
 @Controller
 public class InteresseController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     InteresseRepository repository;
 
     @RequestMapping(value = "/interesse", method = RequestMethod.GET)
-    public String interesses(Model model) {
-        // List<Interesse> interesses = (List<Interesse>) repository.findAll();
-        // model.addAttribute("interesses", interesses);
-        // System.out.println("Interesses " + interesses.toString());
+    public String interesses(Model model, HttpSession session) {
+    		//Conta conta = (Conta) session.getAttribute("Conta");
+        //List<Interesse> interesses = (List<Interesse>) repository.findByConta(conta);
+        //model.addAttribute("interesses", interesses);
+        //LOGGER.debug("Interesses " + interesses.toString());
         return "interesses/interesseDashboard";
     }
 
@@ -38,14 +47,16 @@ public class InteresseController {
     @RequestMapping(value = "/interesse/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Interesse interesse,
             BindingResult result, SessionStatus status,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (result.hasErrors()) {
-            System.out.println("Interesse in if");
-            System.out.println("Interesse " + result.toString());
+        if (result.hasErrors()) {            
+            LOGGER.debug("Interesse hasErrors");
+            LOGGER.debug("Interesse " + result.toString());
             return "interesses/interesseForm";
-        } else {
-            System.out.println("Interesse in else");
+        } else {            
+            LOGGER.debug("processCreationForm Interesse ok");
+            Conta conta = (Conta) session.getAttribute("Conta");
+            interesse.setConta(conta);
             repository.save(interesse);
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Interesse incluído com sucesso !');});</script>";
