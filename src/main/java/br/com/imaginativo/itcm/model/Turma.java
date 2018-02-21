@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -67,6 +68,10 @@ public class Turma extends NamedEntity {
     private List<Ingresso> ingressos;
 
     private String status;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public Curso getCurso() {
         return curso;
@@ -172,4 +177,11 @@ public class Turma extends NamedEntity {
         this.status = status;
     }
 
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 }

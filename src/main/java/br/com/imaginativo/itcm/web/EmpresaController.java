@@ -2,8 +2,11 @@ package br.com.imaginativo.itcm.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +17,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.model.Contato;
 import br.com.imaginativo.itcm.model.Empresa;
 import br.com.imaginativo.itcm.model.Endereco;
+import br.com.imaginativo.itcm.repository.ContaRepository;
 import br.com.imaginativo.itcm.repository.EmpresaRepository;
 
 @Controller
 public class EmpresaController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     EmpresaRepository repository;
+    
+    @Autowired
+    ContaRepository contaRepository;
 
     @RequestMapping(value = "/empresa", method = RequestMethod.GET)
     public String empresas(Model model) {
@@ -43,7 +53,7 @@ public class EmpresaController {
     @RequestMapping(value = "/empresa/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Empresa empresa,
             BindingResult result, SessionStatus status,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
 
         if (result.hasErrors()) {
             System.out.println("Empresa in if");
@@ -52,12 +62,19 @@ public class EmpresaController {
         } else {
             System.out.println("Empresa in else");
             repository.save(empresa);
+            
+            Conta conta = (Conta)session.getAttribute("Conta");
+            if (conta != null) {
+				conta.setEmpresa(empresa);
+				contaRepository.save(conta);
+				session.setAttribute("Conta", conta);
+			}
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Empresa incluído com sucesso !');});</script>";
             redirectAttributes.addFlashAttribute("msginfo", msginfo);
-
+            
             status.setComplete();
-            return "redirect:/empresa";
+            return String.format("redirect:/conta/%d/detail", conta.getId());
         }
     }
 
@@ -73,7 +90,7 @@ public class EmpresaController {
     @RequestMapping(value = "/empresa/{empresaId}/edit", method = RequestMethod.POST)
     public String processUpdateForm(@PathVariable("empresaId") int empresaId,
             @Valid Empresa empresa, BindingResult result, SessionStatus status,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
         if (result.hasErrors()) {
 
             return "empresas/empresaForm";
@@ -138,9 +155,12 @@ public class EmpresaController {
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Empresa atualizada com sucesso !');});</script>";
             redirectAttributes.addFlashAttribute("msginfo", msginfo);
-
+            
+            Conta conta = (Conta)session.getAttribute("Conta");
+            LOGGER.info("Conta id -> %d", conta.getId());
+            
             status.setComplete();
-            return "redirect:/empresa";
+            return String.format("redirect:/conta/%d/detail", conta.getId()) ;
         }
     }
 

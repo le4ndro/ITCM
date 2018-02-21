@@ -20,7 +20,7 @@
        <div>
         	<a th:href="@{/empresa/{id}/edit(id=${empresa.id})}" class="btn btn-primary">Editar</a>
 	        <a th:href="@{/empresa/{id}/delete(id=${empresa.id})}" class="btn btn-primary delete">Delete</a>
-	        <a th:href="@{/empresa}" class="btn btn-primary">Cancelar</a>
+	        <a th:href="@{/conta/{id}/detail(id=${session.Conta.id})}" th:unless="${session.Conta == null}" class="btn btn-primary">Cancelar</a>
         </div>
         <br/>
        
@@ -243,9 +243,9 @@
 		</div>
 	      	
         <div>
-        	<a th:href="@{/empresa/{id}/edit(id=${empresa.id})}" class="btn btn-primary">Editar</a>
+        		<a th:href="@{/empresa/{id}/edit(id=${empresa.id})}" class="btn btn-primary">Editar</a>
 	        <a th:href="@{/empresa/{id}/delete(id=${empresa.id})}" class="btn btn-primary delete">Delete</a>
-	        <a th:href="@{/empresa}" class="btn btn-primary">Cancelar</a>
+	        <a th:href="@{/conta/{id}/detail(id=${session.Conta.id})}" th:unless="${session.Conta == null}" class="btn btn-primary">Cancelar</a>
         </div>
       </div>
     </div>

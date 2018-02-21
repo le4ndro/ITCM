@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -48,6 +49,10 @@ public class Professor extends NamedEntity {
     private Date dataDeNascimento;
 
     private String obs;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public Endereco getEndereco() {
         return endereco;
@@ -104,5 +109,13 @@ public class Professor extends NamedEntity {
     public void setObs(String obs) {
         this.obs = obs;
     }
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 
 }

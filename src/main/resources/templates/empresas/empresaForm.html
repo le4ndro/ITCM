@@ -277,7 +277,7 @@
 				 
 				<div>
 					<input type="submit" class="btn btn-primary" th:value="(${empresa['new']} ? 'Incluir' : 'Atualizar')" />
-					<a th:href="@{/empresa}" class="btn btn-primary">Cancelar</a>
+					<a th:href="@{/conta/{id}/detail(id=${session.Conta.id})}" th:unless="${session.Conta == null}" class="btn btn-primary">Cancelar</a>
 				</div>
 			</form>
 		</div>

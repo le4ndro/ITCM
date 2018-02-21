@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +60,10 @@ public class Identificacao extends BaseEntity {
     private String sexo;
 
     private String naturalidade;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public String getCpf() {
         return cpf;
@@ -171,4 +177,11 @@ public class Identificacao extends BaseEntity {
         this.naturalidade = naturalidade;
     }
 
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <head th:include="layout :: htmlhead" th:with="title='Hello'"></head>
+
+  <body>
+    <div th:replace="layout :: navbar">(navbar)</div>
+
+    <div class="container">
+      <div class="starter-template">
+      <div class="row-fluid">
+	        <ol class="breadcrumb">
+				  <li><a th:href="@{/}" >Home</a></li>				  
+				  <li><a href="#" class="active"> <span>Configurações</span> </a></li>
+			</ol>
+        </div>
+        <div class="page-header"> 
+        	<h1>Configurações</h1>
+  		</div>  	      
+  		
+  		<div class="panel panel-primary">
+  			<div class="panel-heading">Dados da Empresa</div>
+	  		<div class="panel-body">  			
+				<div th:if="${conta.empresa == null}">
+					<p>
+						<span style="color:red">Não existe uma empresa cadastrada. Você deve cadastrar a empresa para começar a usar o software.</span>
+					</p>
+					<p>
+						<a th:href="@{/empresa/new}" class="btn btn-primary">Incluir dados da minha empresa</a>						
+					</p>					
+				</div>
+				<div th:if="${conta.empresa != null}">
+					<div class="row">
+						<div class="col-md-3">
+							<strong>Razaão Social:</strong> <span th:text="${conta.empresa.razaoSocial}"></span> 
+						</div>
+						<div class="col-md-3">
+							<strong>CNPJ:</strong> <span th:text="${conta.empresa.CNPJ}"></span> 
+						</div>
+						<div class="col-md-3">
+							<strong>Status:</strong> <span th:text="${conta.empresa.status}"></span> 
+						</div>
+					</div>
+					<br/>
+					<p>
+						<a th:href="@{/empresa/{id}/edit(id=${conta.empresa.id})}" class="btn btn-primary">Editar dados da minha empresa</a>
+						<a th:href="@{/empresa/{id}/detail(id=${conta.empresa.id})}" class="btn btn-primary">Ver detalhes da minha empresa</a>
+					</p>			
+				</div>
+			</div>	
+	    </div>
+	    
+	    <div class="panel panel-primary">
+  			<div class="panel-heading">Dados do Administrator da Conta</div>
+	  		<div class="panel-body">  			
+				<div th:if="${conta.administrador != null}">
+					<div class="row">
+						<div class="col-md-3">
+							<strong>Nome:</strong> <span th:text="${conta.administrador.username}"></span> 
+						</div>
+						<div class="col-md-3">
+							<strong>Email:</strong> <span th:text="${conta.administrador.email}"></span> 
+						</div>
+						
+					</div>			
+				</div>
+			</div>	
+	    </div>
+	    
+    </div>
+</div>
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+	<script>
+	</script>
+  </body>
+</html>

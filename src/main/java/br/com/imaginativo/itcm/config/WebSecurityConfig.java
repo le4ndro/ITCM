@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/home").permitAll()
+        http.authorizeRequests().antMatchers("/", "/home", "/newAccount", "/conta/new").permitAll()
                 .antMatchers("/registrationConfirm**").permitAll()
                 .antMatchers("/resendRegistrationToken**").permitAll()
                 .antMatchers("/forgotPassword**").permitAll()
@@ -50,14 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	auth.inMemoryAuthentication().withUser("user").password("password")
     	 	.roles("USER"); 
     }
-     */
+    */
 
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(
                 passwordEncoder());
     }
+    
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -2,6 +2,8 @@ package br.com.imaginativo.itcm.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +30,10 @@ public class Endereco extends BaseEntity {
 
     @Column(name = "cep")
     private String CEP;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public String getLogradouro() {
         return logradouro;
@@ -85,4 +91,11 @@ public class Endereco extends BaseEntity {
         CEP = cEP;
     }
 
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 }

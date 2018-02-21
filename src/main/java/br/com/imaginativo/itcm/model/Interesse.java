@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -48,6 +50,10 @@ public class Interesse extends NamedEntity {
 
     @OneToMany(mappedBy = "interesse")
     private List<Atividade> atividades;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public String getTelefone() {
         return telefone;
@@ -145,4 +151,11 @@ public class Interesse extends NamedEntity {
         this.atividades = atividades;
     }
 
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 }

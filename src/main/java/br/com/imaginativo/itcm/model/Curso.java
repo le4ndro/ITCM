@@ -2,6 +2,8 @@ package br.com.imaginativo.itcm.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -24,6 +26,14 @@ public class Curso extends NamedEntity {
     private String tags;
 
     private String status;
+    
+    @ManyToOne
+    @JoinColumn(name = "empresa_id")
+    private Empresa empresa;
+    
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    private Conta conta;
 
     public Curso() {
         super();
@@ -85,7 +95,23 @@ public class Curso extends NamedEntity {
         this.status = status;
     }
 
-    @Override
+    public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+	
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
+
+	@Override
     public String toString() {
         return super.getName();
     }
