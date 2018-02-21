@@ -40,7 +40,7 @@
           <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/}">Home</a></li>
             <li sec:authorize="isAuthenticated()"><a th:href="@{/curso}">Cursos</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/user/list}">Usuários</a></li>
+            <!--<li sec:authorize="isAuthenticated()"><a th:href="@{/user/list}">Usuários</a></li>-->
 			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/empresa}">Empresas</a></li> -->
             <li sec:authorize="isAuthenticated()"><a th:href="@{/professor}">Professores</a></li>
             <li sec:authorize="isAuthenticated()"><a th:href="@{/aluno}">Alunos</a></li> 

@@ -2,9 +2,12 @@ package br.com.imaginativo.itcm.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,19 +19,23 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.imaginativo.itcm.model.Aluno;
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.repository.AlunoRepository;
 
 @Controller
 public class AlunoController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     AlunoRepository repository;
 
     @RequestMapping(value = "/aluno", method = RequestMethod.GET)
-    public String alunos(Model model) {
-        List<Aluno> alunos = (List<Aluno>) repository.findAll();
-        model.addAttribute("alunos", alunos);
-        System.out.println("Alunos " + alunos.toString());
+    public String alunos(Model model, HttpSession session) {
+    		Conta conta = (Conta) session.getAttribute("Conta");
+        List<Aluno> alunos = (List<Aluno>) repository.findByConta(conta);
+        model.addAttribute("alunos", alunos);        
+        LOGGER.debug("Alunos " + alunos.toString());
         return "alunos/alunoList";
     }
 
@@ -41,17 +48,20 @@ public class AlunoController {
 
     @RequestMapping(value = "/aluno/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Aluno aluno, BindingResult result,
-            SessionStatus status, RedirectAttributes redirectAttributes) {
+            SessionStatus status, RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (result.hasErrors()) {
-            System.out.println("Aluno in if");
-            System.out.println("Aluno " + result.toString());
+        if (result.hasErrors()) {            
+            LOGGER.debug("Aluno hasErrors");
+            LOGGER.debug("Aluno " + result.toString());
             return "alunos/alunoForm";
-        } else {
-            System.out.println("Aluno in else");
-            DateTime today = new DateTime();
-            System.out.println(today.toString("yyyyMMddHHmmss"));
+        } else {            
+            LOGGER.debug("processCreationForm Aluno ok");
+            Conta conta = (Conta) session.getAttribute("Conta");
+            
+            DateTime today = new DateTime();            
+            LOGGER.debug(today.toString("yyyyMMddHHmmss"));
             aluno.setMatricula(today.toString("yyyyMMddHHmmss"));
+            aluno.setConta(conta);
             repository.save(aluno);
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Aluno incluído com sucesso !');});</script>";
