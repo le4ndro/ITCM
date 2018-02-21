@@ -2,8 +2,11 @@ package br.com.imaginativo.itcm.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.model.Contato;
 import br.com.imaginativo.itcm.model.Endereco;
 import br.com.imaginativo.itcm.model.Identificacao;
@@ -22,16 +26,20 @@ import br.com.imaginativo.itcm.repository.ProfessorRepository;
 
 @Controller
 public class ProfessorController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     ProfessorRepository repository;
 
     @RequestMapping(value = "/professor", method = RequestMethod.GET)
-    public String professors(Model model) {
-        List<Professor> professors = (List<Professor>) repository.findAll();
+    public String professors(Model model, HttpSession session) {
+    		Conta conta = (Conta) session.getAttribute("Conta");
+    	
+        List<Professor> professors = (List<Professor>) repository.findByConta(conta);
         model.addAttribute("professors", professors);
 
-        System.out.println("Professors " + professors.toString());
+        LOGGER.debug("Professors " + professors.toString());
 
         return "professores/professorList";
     }
@@ -46,14 +54,16 @@ public class ProfessorController {
     @RequestMapping(value = "/professor/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Professor professor,
             BindingResult result, SessionStatus status,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (result.hasErrors()) {
-            System.out.println("Professor in if");
-            System.out.println("Professor " + result.toString());
+        if (result.hasErrors()) {            
+            LOGGER.debug("Porfessor hasErrors");
+            LOGGER.debug("Professor " + result.toString());
             return "professores/professorForm";
-        } else {
-            System.out.println("Professor in else");
+        } else {            
+            LOGGER.debug("Professor ok");
+            Conta conta = (Conta) session.getAttribute("Conta");
+            professor.setConta(conta);
             repository.save(professor);
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Professor incluído com sucesso !');});</script>";
