@@ -2,8 +2,11 @@ package br.com.imaginativo.itcm.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,20 +17,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.model.Curso;
 import br.com.imaginativo.itcm.repository.CursoRepository;
 
 @Controller
 public class CursoController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     CursoRepository repository;
 
     @RequestMapping(value = "/curso", method = RequestMethod.GET)
-    public String cursos(Model model) {
-        List<Curso> cursos = (List<Curso>) repository.findAll();
-        model.addAttribute("cursos", cursos);
-        System.out.println("Cursos " + cursos.toString());
+    public String cursos(Model model, HttpSession session) {
+    		Conta conta = (Conta) session.getAttribute("Conta");
+    		
+        List<Curso> cursos = (List<Curso>) repository.findByConta(conta);
+        model.addAttribute("cursos", cursos);        
+        LOGGER.debug("Cursos " + cursos.toString());
         return "cursos/cursoList";
     }
 
@@ -40,14 +48,16 @@ public class CursoController {
 
     @RequestMapping(value = "/curso/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Curso curso, BindingResult result,
-            SessionStatus status, RedirectAttributes redirectAttributes) {
+            SessionStatus status, RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (result.hasErrors()) {
-            System.out.println("Curso in if");
-            System.out.println("Curso " + result.toString());
+        if (result.hasErrors()) {            
+            LOGGER.debug("processCreationForm -> Curso hasErrors");
+            LOGGER.debug("Curso " + result.toString());
             return "cursos/cursoForm";
         } else {
-            System.out.println("Curso in else");
+            LOGGER.debug("processCreationForm -> Curso ok");
+            Conta conta = (Conta) session.getAttribute("Conta");
+            curso.setConta(conta);          
             repository.save(curso);
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Curso incluído com sucesso !');});</script>";
