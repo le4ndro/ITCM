@@ -26,6 +26,7 @@
 			<form class="chk" th:action="@{${#httpServletRequest.servletPath}}" th:object="${turma}" method="post" data-parsley-validate="">
 			
 				<div class="row">
+					<!--  
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="empresas">Empresa <span style="color:red;">*</span></label> 
@@ -37,7 +38,7 @@
 							<div th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}">unidade Error</div>
 						</div>
 					</div>
-				
+					-->
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="unidades">Unidade <span style="color:red;">*</span></label> 
@@ -161,39 +162,43 @@
 	<div th:include="layout :: footer" id="footer">(footer)</div>
 	<script src="../static/js/uihelper.js" th:src="@{/js/uihelper.js}"></script>
 	<script>
-		$(function() {
-			$(".chosen-select").chosen();
-
-			
-		});
-		carregaSelect("#empresas", "#unidades", "/api/loadselect/unidades/empresa/");
-		carregaSelect("#unidades", "#ambientes", "/api/loadselect/ambientes/unidade/");
-
-		$(document).on("change", '#cursos', function () {
-			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val(); 
-			$("#name").val(turma);
-		});
-
-		$(document).on("change", '#dataInicio', function () {
-			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
-			$("#name").val(turma); 
-		});
-
-		$(document).on("change", '#dataTermino', function () {
-			var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
-			$("#name").val(turma); 
-		});
-
-		$(document).on("submit", ".chk", function () {
-			
-			var selected = "";
-			$('#diasdasemana input:checked').each(function() {
-			    //selected.push($(this).attr('name'));
-			    selected = selected + $(this).val() + ";";
+		$( document ).ready(function() {
+			$(function() {
+				$(".chosen-select").chosen();
 			});
 			
-			$("#dias").val(selected);
+			//carregaSelect("#empresas", "#unidades", "/api/loadselect/unidades/empresa/");
+			carregaSelect("#unidades", "#ambientes", "/api/loadselect/ambientes/unidade/");						
+
+			$(document).on("change", '#cursos', function () {
+				var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val(); 
+				$("#name").val(turma);
+			});
+
+			$(document).on("change", '#dataInicio', function () {
+				var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
+				$("#name").val(turma); 
+			});
+
+			$(document).on("change", '#dataTermino', function () {
+				var turma = $("#cursos option:selected").text() + " " + $("#dataInicio").val() + " " + $("#dataTermino").val();
+				$("#name").val(turma); 
+			});
+
+			$(document).on("submit", ".chk", function () {
+				
+				var selected = "";
+				$('#diasdasemana input:checked').each(function() {
+				    //selected.push($(this).attr('name'));
+				    selected = selected + $(this).val() + ";";
+				});
+				
+				$("#dias").val(selected);
+			});
+			
+			$( "#unidades" ).trigger( "change" );
 		});
+		
 		
   	</script>
   	<div th:utext="${msginfo}"></div>

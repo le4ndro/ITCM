@@ -72,8 +72,7 @@ function carregaSelect(elMaster, elDetail, path){
 		var id = $(elMaster).val();
 		var $el = $(elDetail);
 		var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + path;
-		//var formatedURL = String.format(url, id.toString());
-		//alert(url);
+		
 		$el.empty();
 	    $.getJSON( url + id, function( data ) {
 	    	  $.each( data, function( i, item ) {

@@ -1,9 +1,13 @@
 package br.com.imaginativo.itcm.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.imaginativo.itcm.model.Ambiente;
+import br.com.imaginativo.itcm.model.Conta;
 import br.com.imaginativo.itcm.model.Curso;
 import br.com.imaginativo.itcm.model.Empresa;
 import br.com.imaginativo.itcm.model.Professor;
@@ -29,6 +34,8 @@ import br.com.imaginativo.itcm.repository.UnidadeRepository;
 
 @Controller
 public class TurmaController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     TurmaRepository repository;
@@ -49,22 +56,38 @@ public class TurmaController {
     ProfessorRepository professorRepository;
 
     @RequestMapping(value = "/turma", method = RequestMethod.GET)
-    public String turmas(Model model) {
-        List<Turma> turmas = (List<Turma>) repository.findAll();
-
+    public String turmas(Model model, HttpSession session) {
+    		Conta conta = (Conta) session.getAttribute("Conta");
+    		
+    		List<Turma> turmas = new ArrayList<Turma>();
+    		if (conta.getEmpresa() != null) {
+    			turmas = (List<Turma>) repository.findByEmpresa(conta.getEmpresa());
+		}else {
+			turmas = (List<Turma>) repository.findByConta(conta);
+		}
+        
         model.addAttribute("turmas", turmas);
         System.out.println("Turmas " + turmas.toString());
+        LOGGER.debug("Turmas " + turmas.toString());
         return "turmas/turmaList";
     }
 
     @RequestMapping(value = "/turma/new", method = RequestMethod.GET)
-    public String initCreationForm(Model model) {
+    public String initCreationForm(Model model, HttpSession session) {
+    		Conta conta = (Conta) session.getAttribute("Conta");
+    	
         Turma turma = new Turma();
         model.addAttribute("turma", turma);
 
-        List<Empresa> empresas = (List<Empresa>) empresaRepository.findAll();
-
-        model.addAttribute("empresas", empresas);
+        //List<Empresa> empresas = (List<Empresa>) empresaRepository.findAll();
+        //model.addAttribute("empresas", empresas);
+        List<Unidade> unidades = new ArrayList<Unidade>();
+        
+        if (conta.getEmpresa() != null) {
+        		unidades = (List<Unidade>) unidadeRepository.findByEmpresa(conta.getEmpresa());
+		}
+        
+        model.addAttribute("unidades", unidades);
 
         List<Curso> cursos = (List<Curso>) cursoRepository.findAll();
         model.addAttribute("cursos", cursos);
@@ -78,7 +101,7 @@ public class TurmaController {
 
     @RequestMapping(value = "/turma/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid Turma turma, BindingResult result,
-            SessionStatus status, RedirectAttributes redirectAttributes) {
+            SessionStatus status, RedirectAttributes redirectAttributes, HttpSession session) {
 
         if (result.hasErrors()) {
             System.out.println("Turma in if");
@@ -87,6 +110,9 @@ public class TurmaController {
         } else {
             System.out.println("Turma in else");
             turma.setStatus("ABERTA");
+            Conta conta = (Conta) session.getAttribute("Conta");
+            turma.setEmpresa(conta.getEmpresa());
+            turma.setConta(conta);
             repository.save(turma);
 
             String msginfo = "<script>$(document).ready(function() {toastr.success('Turma incluída com sucesso !');});</script>";
