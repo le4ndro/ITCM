@@ -40,4 +40,5 @@ secrets.yml
 .sts4-cache
 
 set_env.sh
+set_env.bat
 logs
