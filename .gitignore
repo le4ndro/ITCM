@@ -41,4 +41,5 @@ secrets.yml
 
 set_env.sh
 set_env.bat
+set_env.cmd
 logs
