@@ -31,14 +31,15 @@ $ createdb itcmdb_dev
 3. Make a local copy of set_env.sample.sh
 
 ```
-$ cp set_env.sample.sh set_env.sh
+$ cp set_env.sample.sh set_env.sh (or rename set_env.sample.bat to set_env.bat on Windows)
 ```
 
-4. Edit your set_env.sh file with your parameters and set variables
+4. Edit your set_env.sh (or set_env.bat on Windows) file with your parameters and set variables for your environment
 
 ```
 $ chmod 755 set_env.sh
 $ source ./set_env.sh
+(or run set_env.bat on Windows)
 ```
 
 5. Run the application
